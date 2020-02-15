@@ -13,17 +13,20 @@ const Button = ({ onClick, text }) => {
         </button>
     )
 }
-//Displays
-const Display = ({ text, value }) => {
-        return (
-            <div>
-                <p>{text} {value}</p>
-            </div>
-        )
-    
+//Display statistics
+
+const Statistics = ({ goodValue, badValue, neutralValue, allValue, averageValue, percentValue }) => {
+    return (
+        <div>
+            <p>good {goodValue}</p>
+            <p>neutral {neutralValue}</p>
+            <p>bad {badValue}</p>
+            <p>all {allValue}</p>
+            <p>average {averageValue}</p>
+            <p>percentage {percentValue}</p>
+        </div>
+    )
 }
-
-
 
 const App = () => {
     //save clicks of each button to own state
@@ -57,12 +60,10 @@ const App = () => {
             <Button onClick={handleNeutralClick} text='neutral'/>
             <Button onClick={handleBadClick} text='bad'/>
             <Headings text='statistics' />
-            <Display text='good' value={good} />
-            <Display text='neutral' value={neutral} />
-            <Display text='bad' value={bad} />
-            <Display text='all' value={all} />
-            <Display text='average' value={isNaN(percent) ? 0 : (good - bad)/all} />
-            <Display text='percentage' value={isNaN(average) ? '0 %' : (good/all)*100 + ' %'} />
+            <Statistics goodValue={good} badValue={bad} neutralValue={neutral} allValue={all}
+                averageValue={isNaN(percent) ? 0 : (good - bad)/all} 
+                percentValue={isNaN(average) ? '0 %' : (good/all)*100 + ' %'}
+             />
             
         </div>
     )
