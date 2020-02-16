@@ -2,15 +2,6 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 
-const DisplayHighestVotes = (props) => {
-    // const zero = (element) => element != 0;
-    // if (zero) {
-    //     return(<p>No votes counted yet!</p>)
-    // }
-    return (<p>{anecdotes[props.indexOfMax]} has {props.votes}</p>)
-}
-
-
 const App = (props) => {
     const [selected, setSelected] = useState(0)
     const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
