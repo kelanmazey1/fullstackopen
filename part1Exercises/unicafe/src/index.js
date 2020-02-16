@@ -16,12 +16,17 @@ const Button = ({ onClick, text }) => {
 //Display statistics
 
 const Statistics = ({ goodValue, badValue, neutralValue, allValue, averageValue, percentValue }) => {
+    
+    if (allValue === 0) {
+        return (<p>No feedback given</p>)
+    }
+    
     return (
         <div>
             <p>good {goodValue}</p>
             <p>neutral {neutralValue}</p>
             <p>bad {badValue}</p>
-            <p>all {allValue}</p>
+            <p>all {allValue}</p>1
             <p>average {averageValue}</p>
             <p>percentage {percentValue}</p>
         </div>
