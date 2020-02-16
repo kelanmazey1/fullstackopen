@@ -2,32 +2,56 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 
+const DisplayHighestVotes = (props) => {
+    // const zero = (element) => element != 0;
+    // if (zero) {
+    //     return(<p>No votes counted yet!</p>)
+    // }
+    return (<p>{anecdotes[props.indexOfMax]} has {props.votes}</p>)
+}
+
+
 const App = (props) => {
     const [selected, setSelected] = useState(0)
     const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+    const [maxVote, setMaxVote] = useState({ value: 0, index: 0})
 
-
+    
+    //selecting a random number and choosing an item from the list
     const selectRandom = () => {
         const randomValue = Math.floor(Math.random() * anecdotes.length)
         setSelected(randomValue)
     }
 
-    const addVote = () => {
+
+    //copying current votes adding 1 at the selected index. Check if votes higher than current max
+    const handleVote = () => {
         let copyOfVotes = [...votes]
         copyOfVotes[selected] += 1
         setVotes(copyOfVotes)
+
+        // Set new max if number is higher than current maximum votes
+        if (copyOfVotes[selected] > maxVote['value']) {
+            const newMax = {
+                value: copyOfVotes[selected],
+                index: selected
+            }
+            setMaxVote(newMax)
+        }
     }
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             <p>{props.anecdotes[selected]} <br></br>has {votes[selected]} votes</p>
-            <button onClick={() => addVote()}>
+            <button onClick={() => handleVote()}>
                 vote
             </button>   
             <button onClick={() => selectRandom()}>
                 next anecdote
-            </button>   
-            
+            </button>  
+            <h1>Anecdote with most votes</h1>
+            <p>{props.anecdotes[maxVote['index']]} <br></br> has {maxVote['value']} votes</p>           
         </div>
     )
 }
