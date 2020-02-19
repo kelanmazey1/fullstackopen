@@ -1,1 +1,1 @@
-Continued part 1 exercises in new repo
+Continued part 1 exercise in new repo
