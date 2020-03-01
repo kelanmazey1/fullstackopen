@@ -23,7 +23,6 @@ const App = () => {
     event.preventDefault()
     
 
-    console.log(persons.map(person => person.name))
     const personObject = {
       name : newName,
       id: newName
@@ -33,7 +32,7 @@ const App = () => {
     ? window.alert( `${personObject.name} is already in the phonebook!`)
     : setPersons(persons.concat(personObject))
     
-    console.log(persons)
+    
 
     setNewName('')
       
