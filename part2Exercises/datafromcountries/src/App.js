@@ -1,24 +1,80 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import './App.css'
+import Display from './components/viewSimple'
+import ViewDetailed from './components/viewDetailed'
+// import './App.css';
 
-function App() {
+import axios from 'axios';
+
+
+
+const App = () => {
+  const [search, setSearch] = useState('')
+  const [countries, setCountries] = useState([])
+ 
+
+  const countriesAll = () => {
+    axios
+    .get('https://restcountries.eu/rest/v2/all')
+    .then(response => {
+      // console.log(response.data)
+      setCountries(response.data)
+       
+    })
+  }
+  
+  useEffect(countriesAll, [])
+
+  const searchResults = countries
+    .filter(country => 
+      country
+      .name
+      .toLowerCase()
+      .includes(search.toLowerCase())
+      )
+
+  // const display = () =>
+  //   searchResults.map((country, index) =>
+  //       <Display 
+  //         key = {index}
+  //         country = {country} 
+  //         results = {searchResults}
+  //       />
+  //   )
+
+
+  
+  const displayHandler = (searchResults) => {
+    if (searchResults.length === 1) { 
+      return (searchResults.map((country, index) => 
+      <ViewDetailed
+        key={index} 
+        country={country}
+      /> ))
+      
+    } else if (searchResults.length <=10) {
+      return (searchResults.map((country, index) =>
+        <Display 
+          key = {index}
+          country = {country} 
+        />)
+    )
+    } else {
+      return <div>Too many results, please specify a different filter</div>
+    }
+  }  
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value)
+  }
+
+  console.log(searchResults)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        find countries <input value={search}  onChange={handleSearchChange}/>
+      </div>
+      <div>{displayHandler(searchResults)}</div>
     </div>
   );
 }
