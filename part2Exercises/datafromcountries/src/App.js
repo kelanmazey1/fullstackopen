@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './App.css'
-// import View from './components/View'
-// import ViewDetailed from './components/viewDetailed';
 
 import axios from 'axios';
 
@@ -17,7 +15,6 @@ const App = () => {
     axios
     .get('https://restcountries.eu/rest/v2/all')
     .then(response => {
-      // console.log(response.data)
       setCountries(response.data)
       setCountryDisplay(response.data) 
     })
@@ -56,7 +53,7 @@ const App = () => {
       )
     } else {
       return(
-        <div>Oogaly boogaly</div>
+        <div>Please enter a more specific filter</div>
       )
     }
   }
@@ -64,18 +61,15 @@ const App = () => {
   const changeDetail = (results) => {
     if (results.length === 1) {
       setView('detail')
-      console.log('detailed')
+     
     } else if (results.length <= 10) {
       setView('simple')
-      console.log('simple')
+   
     } else {
       setView('default')
-      console.log('default')
+     
     }
   }
-  //changes whether or not detailed view of country is shown
- 
-  //handle button clic
     
 
   const handleSearchChange = (event) => { 
@@ -100,13 +94,9 @@ const App = () => {
         
   }
 
-  console.log('countryDisplay', countryDisplay)
-  console.log('view', view)
   return (
     <div className="App">
       
-      <div>{countryDisplay.length}</div>
-      {/* <div>{searchResults.length}</div> */}
       <div>
         find countries <input value={search}  onChange={handleSearchChange}/>
       </div>
