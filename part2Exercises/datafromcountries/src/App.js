@@ -7,10 +7,49 @@ import axios from 'axios';
 const App = () => {
   const [search, setSearch] = useState('')
   const [countries, setCountries] = useState([])
+  const [weather, setWeather] = useState({
+    request: {
+      type: "City",
+      query: "Stockholm, Sweden",
+      language: "en",
+      unit: "m"},
+      
+      location: {
+      name: "Stockholm",
+      country: "Sweden",
+      region: "Stockholms Lan",
+      lat: "59.333",
+      lon: "18.050",
+      timezone_id: "Europe/Stockholm",
+      localtime: "2020-03-08 15:13",
+      localtime_epoch: 1583680380,
+      utc_offset: "1.0"},
+
+      current: {
+      observation_time: "02:13 PM",
+      temperature: 7,
+      weather_code: 113,
+      weather_icons: ["https://assets.weatherstack.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png"],
+      weather_descriptions: ["Sunny"],
+      wind_speed: 19,
+      wind_degree: 170,
+      wind_dir: "S",
+      pressure: 1006,
+      precip: 0,
+      humidity: 70,
+      cloudcover: 0,
+      feelslike: 4,
+      uv_index: 1,
+      visibility: 10,
+      is_day: "yes"
+    }
+  })
   
   const [view, setView] = useState('')
   const [countryDisplay, setCountryDisplay] = useState([])
   
+
+  //fetch country data
   const countriesAll = () => {
     axios
     .get('https://restcountries.eu/rest/v2/all')
@@ -21,6 +60,27 @@ const App = () => {
   }
   
   useEffect(countriesAll, [])
+  //fetch weather data
+  const fetchWeather = () => {
+    const capitals = countryDisplay.map(country => 
+      country.capital)
+    
+    if (capitals.length === 1) {
+      axios
+      .get('http://api.weatherstack.com/current', {
+        params : {
+          access_key : '4f2f3f56b7924b03b8db29c177f74580',
+          query : capitals.toString()
+        }
+      })
+      .then(response => {
+        setWeather(response.data) 
+      })
+    }
+  }
+  
+  //useEffect(fetchWeather)
+
 
   const display = () => {
     if (view === 'detail') {
@@ -40,6 +100,12 @@ const App = () => {
             <div>
                 <img src={country.flag} alt='Countries flag'/>
             </div>
+            <h3>Weather in {country.capital}</h3>
+                <div> temperature: {weather.current.temperature} Celcius</div>
+                <div> 
+                  wind: {weather.current.windspeed}
+                  direction {weather.current.wind_dir}
+                </div>
           </div>
         )
       )
@@ -93,7 +159,7 @@ const App = () => {
       setCountryDisplay([country])
         
   }
-
+  
   return (
     <div className="App">
       
