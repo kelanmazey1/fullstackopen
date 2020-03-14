@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Entry from './components/entry';
 import Search from './components/search'
+import Notification from './components/notification'
 import PersonForm from './components/personForm';
 import pbServices from './services/phone';
 
@@ -23,6 +24,11 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState('')
+  const [noteSuccess, setNoteSuccess] = useState('default')
+  
+
+
 
   useEffect(hook, [])
 
@@ -30,21 +36,6 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    
-    const addPerson = () => 
-      pbServices
-        .addNew(personObject)
-        .then(newPerson => {
-          setPersons(persons.concat(newPerson))
-        })
-
-    const updatePerson = () => 
-      pbServices
-        .update(personObject)
-        .then(updatedPerson => {
-          console.log(updatedPerson)
-          setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
-        })
 
     const matchingName = persons.find(person => person.name === newName)
     const matchNameAndNumber = persons.find(person => person.name === newName && person.number === newNumber)
@@ -54,6 +45,57 @@ const App = () => {
       number: newNumber,
       id: newName
     }
+
+    const addPerson = () => 
+      pbServices
+        .addNew(personObject)
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
+
+          setNotification(`${newPerson.name} has been added to the phone book`)
+          setNoteSuccess('notificationSuccess')
+          
+          setTimeout(() => {
+            setNotification(null)
+            setNoteSuccess(null)
+          }, 5000)  
+        })
+        .catch(error => {
+          setNotification(`An error has been encountered ${personObject.name} may not be added`)
+          setNoteSuccess('notificationError')
+
+          setTimeout(() => {
+            setNotification(null)
+            setNoteSuccess(null)
+          }, 5000)
+        })
+
+    const updatePerson = () => 
+      pbServices
+        .update(personObject)
+        .then(updatedPerson => {
+          
+          setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
+
+          setNotification(`${updatedPerson.name} has been updated`)
+          setNoteSuccess('notificationSuccess')
+          
+          setTimeout(() => {
+            setNotification(null)
+            setNoteSuccess(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setNotification(`Info of ${personObject.name} has already been removed from server`)
+          setNoteSuccess('notificationError')
+
+          setPersons(persons.filter(p => p.id !== newName))
+
+          setTimeout(() => {
+            setNotification(null)
+            setNoteSuccess(null)
+          }, 5000)
+        })
 
     if (typeof matchNameAndNumber === 'object') {
                       window.alert( `${personObject.name} is already in the phonebook with the same number`)
@@ -113,6 +155,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} success={noteSuccess}/>
       <Search filter={filter} handler={handleFilterChange}/>
       <h3>add new</h3>
       <PersonForm addName={addName} newName={newName} newNumber={newNumber}

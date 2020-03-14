@@ -7,6 +7,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.notificationSuccess {
+  color: green;
+  background: lightgrey;
+  border-radius: 5px;
+  padding: 7px;
+  margin-bottom: 10px;
+}
+
+.notificationError {
+  color: red;
+  background: lightgrey;
+  border-radius: 5px;
+  padding: 7px;
+  margin-bottom: 10px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
