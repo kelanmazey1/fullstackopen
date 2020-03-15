@@ -79,9 +79,9 @@ app.post('/api/persons', (req,res) => {
         id: generateID()
     }
 
-    console.log(person)
+    
     persons = persons.concat(person)
-    console.log(persons)
+    
     res.json(person)
 })
 
