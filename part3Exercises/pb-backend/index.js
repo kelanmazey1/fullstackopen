@@ -1,7 +1,35 @@
 const express = require('express')
+const morgan = require('morgan')
+
+
+
+
+
 const app = express()
 
 app.use(express.json())
+
+morgan.token('obj', getName = (req, res) => {
+    const body = req.body
+    
+    return JSON.stringify(body)
+    
+})
+
+
+app.use(morgan('tiny', {
+    skip: (req, res) => {return req.method === 'POST'}
+}))
+
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :obj', {
+    skip: (req, res) => {return req.method !== 'POST'}
+})) 
+
+
+
+
+//console.log(morgan.token('method', (req) => req.method))
 
 let persons = [
     {
@@ -92,6 +120,7 @@ app.get('/info', (req, res) => {
 
     res.send(`<div>Phonebook has info for ${count} people</div><br><div>${time}</div>`)
 })
+//morgan('tiny')
 
 const PORT = 3001
 
