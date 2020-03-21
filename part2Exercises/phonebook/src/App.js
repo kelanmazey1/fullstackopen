@@ -42,8 +42,7 @@ const App = () => {
     
     const personObject = {
       name : newName,
-      number: newNumber,
-      id: newName
+      number: newNumber
     }
 
     const addPerson = () => 
