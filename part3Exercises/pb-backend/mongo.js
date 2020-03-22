@@ -6,7 +6,7 @@ if ( numOfArgs<3 ) {
     process.exit(1)
 }
 
-const password = process.argv[2]        
+const password = process.argv[2]
 
 const url =
     `mongodb+srv://kuranhaze:${password}@cluster0-9knf1.mongodb.net/phonebook?retryWrites=true&w=majority`
