@@ -4,6 +4,7 @@
   "description": "backend for phonebook app",
   "main": "index.js",
   "scripts": {
+    "build:ui": "rm -rf build && cd ../../part2Exercises/phonebook && npm run build --prod && cp -r build ../../part3Exercises/pb-backend/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js"
@@ -12,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.5",
     "morgan": "^1.9.1"

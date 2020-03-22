@@ -15,6 +15,7 @@ const deleteEntry = (IDtoDelete) => {
 
 const update = (updatedEntry) => {
     const request = axios.put(`${baseUrl}/${updatedEntry.id}`, updatedEntry)
+    console.log(request)
     return request.then(response => response.data)
 }
 

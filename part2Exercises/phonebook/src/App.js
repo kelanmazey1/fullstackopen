@@ -44,6 +44,7 @@ const App = () => {
       name : newName,
       number: newNumber
     }
+    console.log({...matchingName})
 
     const addPerson = () => 
       pbServices
@@ -71,7 +72,7 @@ const App = () => {
 
     const updatePerson = () => 
       pbServices
-        .update(personObject)
+        .update({...matchingName, number: newNumber})
         .then(updatedPerson => {
           
           setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
