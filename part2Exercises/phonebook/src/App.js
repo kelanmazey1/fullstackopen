@@ -61,8 +61,9 @@ const App = () => {
           }, 5000)  
         })
         .catch(error => {
-          setNotification(`An error has been encountered ${personObject.name} may not be added`)
+          setNotification(error.response.data.error)
           setNoteSuccess('notificationError')
+      
 
           setTimeout(() => {
             setNotification(null)
