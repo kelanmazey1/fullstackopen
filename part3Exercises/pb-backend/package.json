@@ -7,7 +7,8 @@
     "build:ui": "rm -rf build && cd ../../part2Exercises/phonebook && npm run build --prod && cp -r build ../../part3Exercises/pb-backend/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
   },
   "author": "Kelan Mazey",
   "license": "MIT",
@@ -20,6 +21,9 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.1",
     "nodemon": "^2.0.2"
   }
 }

@@ -1,43 +1,48 @@
-require('dotenv').config()
-const mongoose = require('mongoose') 
-const uniqueValidator = require('mongoose-unique-validator') 
+/* eslint-disable no-underscore-dangle */
+require('dotenv').config();
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-mongoose.set('useFindAndModify', false)
+mongoose.set('useFindAndModify', false);
 
-const url = process.env.MONGODB_URI
+const url = process.env.MONGODB_URI;
 
-console.log(url)
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-    .then(results => {
-        console.log('connected to MongoDB')
-    })
-    .catch((error) => {
-        console.log('error connectiong to MongoDB', error.message)
-    })
+  .then(() => {
+    // eslint-disable-next-line no-console
+    console.log('connected to MongoDB');
+  })
+  .catch((error) => {
+    // eslint-disable-next-line no-console
+    console.log('error connectiong to MongoDB', error.message);
+  });
 
 const personSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 3,
-        unique: true
-    },
-    number: {
-        type: String,
-        minlength: 8,
-        required: true
-    }
-})
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+    unique: true,
+  },
+  number: {
+    type: String,
+    minlength: 8,
+    required: true,
+  },
+});
 
-personSchema.plugin(uniqueValidator)
+personSchema.plugin(uniqueValidator);
 
 personSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
-})
+  transform: (document, returnedObject) => {
+    // eslint-disable-next-line no-param-reassign
+    returnedObject.id = returnedObject._id.toString();
+    // eslint-disable-next-line no-param-reassign
+    delete returnedObject._id;
+    // eslint-disable-next-line no-param-reassign
+    delete returnedObject.__v;
+  },
+});
 
-module.exports = mongoose.model('Person', personSchema)
+module.exports = mongoose.model('Person', personSchema);
