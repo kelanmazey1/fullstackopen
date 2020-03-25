@@ -10,7 +10,7 @@ import axios from 'axios';
 
 
 const App = () => {
-  
+
   const hook = () => {
     axios
       .get('/api/persons')
@@ -26,7 +26,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [notification, setNotification] = useState('')
   const [noteSuccess, setNoteSuccess] = useState('default')
-  
+
 
 
 
@@ -39,14 +39,14 @@ const App = () => {
 
     const matchingName = persons.find(person => person.name === newName)
     const matchNameAndNumber = persons.find(person => person.name === newName && person.number === newNumber)
-    
+
     const personObject = {
       name : newName,
       number: newNumber
     }
-    console.log({...matchingName})
 
-    const addPerson = () => 
+
+    const addPerson = () =>
       pbServices
         .addNew(personObject)
         .then(newPerson => {
@@ -54,16 +54,16 @@ const App = () => {
 
           setNotification(`${newPerson.name} has been added to the phone book`)
           setNoteSuccess('notificationSuccess')
-          
+
           setTimeout(() => {
             setNotification(null)
             setNoteSuccess(null)
-          }, 5000)  
+          }, 5000)
         })
         .catch(error => {
           setNotification(error.response.data.error)
           setNoteSuccess('notificationError')
-      
+
 
           setTimeout(() => {
             setNotification(null)
@@ -71,16 +71,16 @@ const App = () => {
           }, 5000)
         })
 
-    const updatePerson = () => 
+    const updatePerson = () =>
       pbServices
         .update({...matchingName, number: newNumber})
         .then(updatedPerson => {
-          
+
           setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
 
           setNotification(`${updatedPerson.name} has been updated`)
           setNoteSuccess('notificationSuccess')
-          
+
           setTimeout(() => {
             setNotification(null)
             setNoteSuccess(null)
@@ -99,25 +99,24 @@ const App = () => {
         })
 
     if (typeof matchNameAndNumber === 'object') {
-                      window.alert( `${personObject.name} is already in the phonebook with the same number`)
-      } else if (typeof matchingName === 'object') {
+          window.alert( `${personObject.name} is already in the phonebook with the same number`)
+      } else if (typeof matchingName === 'object' && window.confirm(`${newName} is already in the phonebook, do you want to update their number?` )) {
         // ask to update
-        window.confirm(`${newName} is already in the phonebook, do you want to update their number?` ) 
         updatePerson()
-      } else {
+      } else if (typeof (matchNameAndNumber || matchingName) !== 'object') {
         addPerson()
       }
-    
+
 
     setNewName('')
-    setNewNumber('')  
-      
+    setNewNumber('')
+
   }
 
   const deleteName = id => {
-    
+
     const person = persons.find(p => p.id === id)
-    
+
     if (window.confirm(`Are you sure you want to delete ${person.name}`)) {
       pbServices
         .deleteEntry(person.id, person.name)
@@ -132,13 +131,13 @@ const App = () => {
   persons
   .filter(person => person.name.includes(filter))
   .map(person =>
-    <Entry 
+    <Entry
       key={person.id}
       deleteName={() => deleteName(person.id)}
       person={person}
     />
   )
-  
+
   const handleAddName = (event) => {
     setNewName(event.target.value)
   }
@@ -151,7 +150,7 @@ const App = () => {
     setFilter(event.target.value)
   }
 
-  
+
 
   return (
     <div>
