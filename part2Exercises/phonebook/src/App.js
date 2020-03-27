@@ -87,7 +87,7 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          setNotification(`Info of ${personObject.name} has already been removed from server`)
+          setNotification(`An error was encountered ${personObject.name} may have not been updated/added`)
           setNoteSuccess('notificationError')
 
           setPersons(persons.filter(p => p.id !== newName))
