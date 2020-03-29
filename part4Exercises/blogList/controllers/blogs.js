@@ -6,8 +6,7 @@ blogRouter.get('/', (request, response) => {
     .find({})
     .then((blogs) => {
       response.json(blogs);
-    })
-    .catch((error) => response.status(400).json(error));
+    });
 });
 
 blogRouter.post('/', (request, response) => {
@@ -17,8 +16,7 @@ blogRouter.post('/', (request, response) => {
     .save()
     .then((result) => {
       response.status(201).json(result);
-    })
-    .catch((error) => response.status(400).json(error));
+    });
 });
 
 module.exports = blogRouter;
