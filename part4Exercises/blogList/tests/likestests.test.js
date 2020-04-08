@@ -1,4 +1,9 @@
-const { totalLikes, favouriteBlog } = require('../utils/list_helper');
+const {
+  totalLikes,
+  favouriteBlog,
+  mostBlogs,
+  mostLikes,
+} = require('../utils/list_helper');
 
 const listWithOneBlog = [
   {
@@ -91,12 +96,22 @@ describe('blog with the most likes', () => {
   });
 });
 
-const mostBlogs = (blogs2) => {
-  // use sum by to sum each authors blogs
-  const test = _.groupBy(blogs2, 'author');
-  console.log(test);
-  // count number of each author
-  // find max of counts and return author
-};
+describe('author with the most blogs', () => {
+  test('returns Robert Martin with 3 blogs', () => {
+    expect(mostBlogs(blogs))
+      .toEqual({
+        author: 'Robert C. Martin',
+        blogs: 3,
+      });
+  });
+});
 
-mostBlogs(blogs);
+describe('author with the most likes on all blogs', () => {
+  test('returns Edsger Dijkstra with 17 likes', () => {
+    expect(mostLikes(blogs))
+      .toEqual({
+        author: 'Edsger W. Dijkstra',
+        likes: 17,
+      });
+  });
+});
