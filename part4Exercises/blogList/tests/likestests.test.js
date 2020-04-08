@@ -90,3 +90,13 @@ describe('blog with the most likes', () => {
       });
   });
 });
+
+const mostBlogs = (blogs2) => {
+  // use sum by to sum each authors blogs
+  const test = _.groupBy(blogs2, 'author');
+  console.log(test);
+  // count number of each author
+  // find max of counts and return author
+};
+
+mostBlogs(blogs);
