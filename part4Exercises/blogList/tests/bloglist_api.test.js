@@ -80,6 +80,17 @@ test('blog not created without title and url', async () => {
     .expect(400);
 });
 
+test('blog at certain endpoint is deleted', async () => {
+  await api
+    .delete('/api/blogs/5a422a851b54a676234d17f7')
+    .expect(204);
+
+  const currentBlogs = await helper.blogsInDB();
+  const currentBlogIDs = currentBlogs.map(blog => blog.id);
+  
+  expect(currentBlogIDs).not.toContainEqual('5a422a851b54a676234d17f7');
+})
+
 afterAll(() => {
   mongoose.connection.close();
 });
