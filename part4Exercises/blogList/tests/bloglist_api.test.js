@@ -86,10 +86,28 @@ test('blog at certain endpoint is deleted', async () => {
     .expect(204);
 
   const currentBlogs = await helper.blogsInDB();
-  const currentBlogIDs = currentBlogs.map(blog => blog.id);
-  
+  const currentBlogIDs = currentBlogs.map((blog) => blog.id);
+
   expect(currentBlogIDs).not.toContainEqual('5a422a851b54a676234d17f7');
-})
+});
+
+test('blog is updated with object sent in request', async () => {
+  const updatedBlog = {
+    title: 'Something funny',
+    author: 'Kelan Mazey',
+    url: 'https://reactpatterns.com/',
+    likes: 58,
+  };
+
+  await api
+    .put('/api/blogs/5a422a851b54a676234d17f7')
+    .send(updatedBlog);
+
+  const blogAfterUpdate = await helper.findBlog('5a422a851b54a676234d17f7');
+  const { id, ...blogAfterUpdateNoId } = blogAfterUpdate;
+
+  expect(blogAfterUpdateNoId).toEqual(updatedBlog);
+});
 
 afterAll(() => {
   mongoose.connection.close();
