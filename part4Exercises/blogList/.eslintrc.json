@@ -3,5 +3,7 @@
       "jest": true
    },
    "extends": "airbnb",
-   "rules": {}
+   "rules": {
+      "no-underscore-dangle": 0
+   }
 }
