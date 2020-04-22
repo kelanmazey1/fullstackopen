@@ -59,6 +59,19 @@ const listWithOneBlog = [
   },
 ];
 
+const initialUsers = [
+  {
+    username: 'testing',
+    name: 'testy the tester',
+    password: 'foobar',
+  },
+  {
+    username: 'the2ndUser',
+    name: 'the 2nd tester',
+    password: 'barfoo',
+  },
+];
+
 const blogsInDB = async () => {
   const blogs = await Blog.find({});
   return blogs.map((blog) => blog.toJSON());
@@ -76,6 +89,7 @@ const findBlog = async (id) => {
 
 module.exports = {
   initialBlogs,
+  initialUsers,
   listWithOneBlog,
   findBlog,
   blogsInDB,
