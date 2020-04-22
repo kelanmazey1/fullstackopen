@@ -11,17 +11,18 @@ blogRouter.get('/', async (request, response) => {
   response.json(blogs.map((blog) => blog.toJSON()));
 });
 
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization');
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7);
-  }
-  return null;
-};
+// const getTokenFrom = (request) => {
+//   const authorization = request.get('authorization');
+//   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+//     return authorization.substring(7);
+//   }
+//   return null;
+// };
 
 blogRouter.post('/', async (request, response) => {
-  const { body } = request;
-  const token = getTokenFrom(request);
+  const { body, token } = request;
+  // const token = getTokenFrom(request);
+  console.log(request);
   const decodedToken = jwt.verify(token, process.env.SECRET);
 
   const user = await User.findById(decodedToken.id);
