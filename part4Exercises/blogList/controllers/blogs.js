@@ -22,7 +22,7 @@ blogRouter.get('/', async (request, response) => {
 blogRouter.post('/', async (request, response) => {
   const { body, token } = request;
   // const token = getTokenFrom(request);
-  console.log(request);
+
   const decodedToken = jwt.verify(token, process.env.SECRET);
 
   const user = await User.findById(decodedToken.id);
@@ -43,6 +43,19 @@ blogRouter.post('/', async (request, response) => {
 });
 
 blogRouter.delete('/:id', async (request, response) => {
+  const { token } = request;
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+
+  // find blog to be deleted
+  const blogToDelete = await Blog.findById(request.params.id);
+  // parse user object in blog to see user who created it
+  const blogCreator = blogToDelete.user.toString();
+  // compare if user making the request is the creator
+  // if they aren't return an error
+  if (blogCreator !== decodedToken.id) {
+    return response.status(401).send({ errror: 'Only the creator of a blog can delete it' });
+  }
+  // if requester is the creator then delete the blog and save blogs and user
   await Blog.findByIdAndDelete(request.params.id);
   response.status(204).end();
 });
