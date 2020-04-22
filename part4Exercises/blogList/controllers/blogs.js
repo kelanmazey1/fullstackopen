@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const blogRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');

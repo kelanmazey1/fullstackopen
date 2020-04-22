@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 
 const app = require('../app');
 const helper = require('./test_helper');
