@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import loginService from '../services/login';
-import blogService from '../services/blogs';
 
-const LoginForm = () => {
+const LoginForm = ({ setLoggedUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const userLogin = loginService.login({
+      const userLogin = await loginService.login({
         username, password,
       });
 
-      blogService.setToken(userLogin.token);
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(userLogin),
+      );
       setUsername('');
       setPassword('');
+      setLoggedUser(userLogin);
     } catch (exception) {
       console.log('Wrong Credentials');
     }
@@ -36,14 +38,14 @@ const LoginForm = () => {
         <div>
           password
           <input
-            type="text"
+            type="password"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
+        <button type="submit">login</button>
       </form>
-      <button type="submit">login</button>
     </div>
   );
 };
