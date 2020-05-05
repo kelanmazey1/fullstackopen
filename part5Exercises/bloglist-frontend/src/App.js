@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
+import Notification from './components/Notification';
 
 import blogService from './services/blogs';
 
@@ -10,6 +11,8 @@ import blogService from './services/blogs';
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -24,10 +27,6 @@ const App = () => {
     }
   }, []);
 
-  const setLoggedUser = (loggedUser) => {
-    setUser(loggedUser);
-  };
-
   const logoutUser = () => {
     setUser(null);
     window.localStorage.removeItem('loggedBlogappUser');
@@ -40,7 +39,16 @@ const App = () => {
   return (
     <div>
       { user === null
-        ? <LoginForm setLoggedUser={setLoggedUser} />
+        ? (
+          <div>
+            <Notification notification={notification} isError={isError} />
+            <LoginForm
+              setUser={setUser}
+              setNotification={setNotification}
+              setIsError={setIsError}
+            />
+          </div>
+        )
         : (
           <div>
             <p>
@@ -49,9 +57,16 @@ const App = () => {
               logged in
             </p>
             <button type="submit" onClick={() => logoutUser()}>logout</button>
-            <h2>Create new</h2>
-            <BlogForm concatNewBlog={concatNewBlog} />
+
             <h2>blogs</h2>
+            <Notification notification={notification} isError={isError} />
+            <h2>Create new</h2>
+            <BlogForm
+              concatNewBlog={concatNewBlog}
+              setNotification={setNotification}
+              setIsError={setIsError}
+            />
+
             {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
           </div>
         )}

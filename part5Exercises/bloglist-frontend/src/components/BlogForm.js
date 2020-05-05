@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const BlogForm = ({ concatNewBlog }) => {
+const BlogForm = ({ concatNewBlog, setNotification, setIsError }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -16,8 +16,10 @@ const BlogForm = ({ concatNewBlog }) => {
     };
 
     const response = await blogService.createBlog(newBlog);
-    console.log(response);
+
     concatNewBlog(response);
+    setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`);
+    setIsError(false);
     setTitle('');
     setAuthor('');
     setUrl('');
