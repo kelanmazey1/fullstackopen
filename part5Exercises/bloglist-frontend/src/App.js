@@ -4,6 +4,7 @@ import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
 
 import blogService from './services/blogs';
 
@@ -26,6 +27,8 @@ const App = () => {
       blogService.setToken(loggedUser.token);
     }
   }, []);
+
+  const blogFormRef = React.createRef();
 
   const logoutUser = () => {
     setUser(null);
@@ -61,12 +64,14 @@ const App = () => {
             <h2>blogs</h2>
             <Notification notification={notification} isError={isError} />
             <h2>Create new</h2>
-            <BlogForm
-              concatNewBlog={concatNewBlog}
-              setNotification={setNotification}
-              setIsError={setIsError}
-            />
-
+            <Togglable buttonLabel="new blog" ref={blogFormRef}>
+              <BlogForm
+                toggleVisibility={() => blogFormRef.current.toggleVisibility()}
+                concatNewBlog={concatNewBlog}
+                setNotification={setNotification}
+                setIsError={setIsError}
+              />
+            </Togglable>
             {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
           </div>
         )}

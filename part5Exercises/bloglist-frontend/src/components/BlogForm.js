@@ -2,13 +2,19 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const BlogForm = ({ concatNewBlog, setNotification, setIsError }) => {
+const BlogForm = ({
+  concatNewBlog,
+  setNotification,
+  setIsError,
+  toggleVisibility,
+}) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
   const addBlog = async (event) => {
     event.preventDefault();
+    toggleVisibility();
     const newBlog = {
       title,
       author,
