@@ -20,6 +20,9 @@
   .blog-details {
   display: inline-block;
 }
+  .likes {
+    display: inline-block;
+  }
 
   .blog {
   padding: 2px;

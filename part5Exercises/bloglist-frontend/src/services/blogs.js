@@ -22,8 +22,21 @@ const createBlog = async (newObject) => {
   return response.data;
 };
 
+  const update = async (id, newObject) => {
+    console.log('like has been added woooo');
+
+    const config = {
+      headers: { Authorization: token},
+    };
+
+    const updateBlog = await axios.put(`${baseUrl}/${id}`, newObject, config)
+
+    console.log(updateBlog);
+  }
+
 export default {
   getAll,
   setToken,
   createBlog,
+  update,
 };
