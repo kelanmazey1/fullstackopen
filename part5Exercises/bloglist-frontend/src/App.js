@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
@@ -39,6 +40,27 @@ const App = () => {
     setBlogs(blogs.concat(newBlog));
   };
 
+  const addLike = async (id) => {
+    const blog = blogs.find((b) => b.id === id);
+
+    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+
+    const response = await blogService.update(id, updatedBlog);
+    setBlogs(blogs.map((blog) => (blog.id !== id ? blog : response)));
+  };
+
+  const deleteBlog = async (id) => {
+    const blogToDelete = blogs.find((b) => b.id === id);
+    // eslint-disable-next-line no-alert
+    if (confirm(
+      `Are you sure you want to delete ${blogToDelete.title} by ${blogToDelete.author}`,
+    )) {
+      await blogService.deleteBlog(id);
+      const remainingBlogs = await blogService.getAll();
+      setBlogs(remainingBlogs);
+    }
+  };
+
   return (
     <div>
       { user === null
@@ -72,7 +94,19 @@ const App = () => {
                 setIsError={setIsError}
               />
             </Togglable>
-            {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+            {blogs
+              .sort((a, b) => (a.likes > b.likes ? -1 : 1))
+              .map(
+                (blog) => (
+                  <Blog
+                    key={blog.id}
+                    blog={blog}
+                    addLike={() => addLike(blog.id)}
+                    deleteBlog={() => deleteBlog(blog.id)}
+                  />
+                ),
+              )}
+            )
           </div>
         )}
     </div>

@@ -3,20 +3,29 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike, deleteBlog }) => {
   const [showDetail, setShowDetail] = useState(false);
 
   const handleShowHide = () => {
     setShowDetail(!showDetail);
   };
 
-  const addLike = (id, blog) => {
-    const updatedBLog = {
-      ...blog,
-      likes: blog.likes + 1,
+  // const addLike = (id, blog) => {
+  //   const updateBlog = { ...blog };
+  //   updateBlog.likes += 1;
+
+  //   blogService.update(id, updateBlog);
+  //   setNumOfLikes(numOfLikes + 1);
+  // };
+
+  const user = JSON.parse(localStorage.getItem('loggedBlogappUser'));
+
+  const showDeleteButton = () => {
+    if (user.username === blog.user.username) {
+      return (
+        <button type="button" onClick={deleteBlog}>delete</button>
+      );
     }
-    
-    blogService.update(id, updatedBLog);
   };
 
   const showExtraDetail = () => {
@@ -30,14 +39,18 @@ const Blog = ({ blog }) => {
             likes
             {' '}
             {blog.likes}
-            <button 
-              type="button"
-              onClick={() => addLike(blog.id, blog)}>
+            <button
+              type="submit"
+              onClick={addLike}
+            >
               like
             </button>
           </div>
           <div>
             {blog.user ? blog.user.name : 'No user assigned'}
+          </div>
+          <div>
+            {showDeleteButton()}
           </div>
         </>
       );
