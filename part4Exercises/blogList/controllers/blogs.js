@@ -60,13 +60,15 @@ blogRouter.put('/:id', async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
+    user: body.user.id,
   };
 
   const returnedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
     updatedBlog,
-    { new: true, runValidators: true },
+    { runValidators: true },
   );
+  // updated blog returns the user as a string, this is adding the object back in its place
 
   response.json(returnedBlog.toJSON());
 });

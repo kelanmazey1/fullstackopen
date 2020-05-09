@@ -45,8 +45,9 @@ const App = () => {
 
     const updatedBlog = { ...blog, likes: blog.likes + 1 };
 
-    const response = await blogService.update(id, updatedBlog);
-    setBlogs(blogs.map((blog) => (blog.id !== id ? blog : response)));
+    await blogService.update(id, updatedBlog);
+    const allBlogs = await blogService.getAll();
+    setBlogs(allBlogs);
   };
 
   const deleteBlog = async (id) => {
@@ -92,6 +93,7 @@ const App = () => {
                 concatNewBlog={concatNewBlog}
                 setNotification={setNotification}
                 setIsError={setIsError}
+                currentUser={user}
               />
             </Togglable>
             {blogs
@@ -103,6 +105,7 @@ const App = () => {
                     blog={blog}
                     addLike={() => addLike(blog.id)}
                     deleteBlog={() => deleteBlog(blog.id)}
+                    currentUser={user}
                   />
                 ),
               )}

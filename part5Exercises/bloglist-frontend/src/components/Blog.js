@@ -1,9 +1,13 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable linebreak-style */
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
 
-const Blog = ({ blog, addLike, deleteBlog }) => {
+const Blog = ({
+  blog,
+  addLike,
+  deleteBlog,
+  currentUser,
+}) => {
   const [showDetail, setShowDetail] = useState(false);
 
   const handleShowHide = () => {
@@ -18,10 +22,9 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
   //   setNumOfLikes(numOfLikes + 1);
   // };
 
-  const user = JSON.parse(localStorage.getItem('loggedBlogappUser'));
 
   const showDeleteButton = () => {
-    if (user.username === blog.user.username) {
+    if (currentUser.username === blog.user.username) {
       return (
         <button type="button" onClick={deleteBlog}>delete</button>
       );
@@ -47,7 +50,7 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
             </button>
           </div>
           <div>
-            {blog.user ? blog.user.name : 'No user assigned'}
+            {blog.user.name}
           </div>
           <div>
             {showDeleteButton()}

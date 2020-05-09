@@ -7,6 +7,7 @@ const BlogForm = ({
   setNotification,
   setIsError,
   toggleVisibility,
+  currentUser,
 }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -19,6 +20,7 @@ const BlogForm = ({
       title,
       author,
       url,
+      user: currentUser.id,
     };
 
     const response = await blogService.createBlog(newBlog);
