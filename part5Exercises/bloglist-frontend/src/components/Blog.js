@@ -1,6 +1,8 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable linebreak-style */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import blogService from '../services/blogs';
 
 const Blog = ({
@@ -76,6 +78,24 @@ const Blog = ({
       {showExtraDetail()}
     </div>
   );
+};
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string,
+    author: PropTypes.string,
+    url: PropTypes.string,
+    user: PropTypes.object,
+    likes: PropTypes.number,
+  }).isRequired,
+  blogs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    username: PropTypes.string,
+    name: PropTypes.string,
+    passwordHash: PropTypes.string,
+    blogs: PropTypes.object,
+  }).isRequired,
 };
 
 export default Blog;
