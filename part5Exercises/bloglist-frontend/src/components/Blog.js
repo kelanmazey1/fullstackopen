@@ -1,26 +1,31 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable linebreak-style */
 import React, { useState } from 'react';
+import blogService from '../services/blogs';
 
 const Blog = ({
   blog,
-  addLike,
+  blogs,
   deleteBlog,
   currentUser,
+
 }) => {
   const [showDetail, setShowDetail] = useState(false);
+  const [numberOfLikes, setNumberOfLikes] = useState(blog.likes);
 
   const handleShowHide = () => {
     setShowDetail(!showDetail);
   };
 
-  // const addLike = (id, blog) => {
-  //   const updateBlog = { ...blog };
-  //   updateBlog.likes += 1;
+  const addLike = async (id) => {
+    const blogToUpdate = blogs.find((b) => b.id === id);
 
-  //   blogService.update(id, updateBlog);
-  //   setNumOfLikes(numOfLikes + 1);
-  // };
+    const updatedBlog = { ...blogToUpdate, likes: numberOfLikes + 1 };
+
+    blogService.update(id, updatedBlog);
+
+    setNumberOfLikes(numberOfLikes + 1);
+  };
 
 
   const showDeleteButton = () => {
@@ -41,10 +46,10 @@ const Blog = ({
           <div className="likes">
             likes
             {' '}
-            {blog.likes}
+            {numberOfLikes}
             <button
               type="submit"
-              onClick={addLike}
+              onClick={() => addLike(blog.id)}
             >
               like
             </button>

@@ -16,6 +16,7 @@ const App = () => {
   const [notification, setNotification] = useState(null);
   const [isError, setIsError] = useState(false);
 
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -40,15 +41,15 @@ const App = () => {
     setBlogs(blogs.concat(newBlog));
   };
 
-  const addLike = async (id) => {
-    const blog = blogs.find((b) => b.id === id);
+  // const addLike = async (id) => {
+  //   const blog = blogs.find((b) => b.id === id);
 
-    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+  //   const updatedBlog = { ...blog, likes: blog.likes + 1 };
 
-    await blogService.update(id, updatedBlog);
-    const allBlogs = await blogService.getAll();
-    setBlogs(allBlogs);
-  };
+  //   await blogService.update(id, updatedBlog);
+
+  //   setNumberOfLikes(numberOfLikes + 1);
+  // };
 
   const deleteBlog = async (id) => {
     const blogToDelete = blogs.find((b) => b.id === id);
@@ -103,7 +104,7 @@ const App = () => {
                   <Blog
                     key={blog.id}
                     blog={blog}
-                    addLike={() => addLike(blog.id)}
+                    blogs={blogs}
                     deleteBlog={() => deleteBlog(blog.id)}
                     currentUser={user}
                   />
