@@ -41,8 +41,8 @@ const Blog = ({
   const showExtraDetail = () => {
     if (showDetail) {
       return (
-        <>
-          <div>
+        <div className="extraDetail">
+          <div className="url">
             {blog.url}
           </div>
           <div className="likes">
@@ -62,7 +62,7 @@ const Blog = ({
           <div>
             {showDeleteButton()}
           </div>
-        </>
+        </div>
       );
     }
   };
