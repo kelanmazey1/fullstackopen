@@ -10,6 +10,7 @@ const Blog = ({
   blogs,
   deleteBlog,
   currentUser,
+  addLike,
 
 }) => {
   const [showDetail, setShowDetail] = useState(false);
@@ -19,15 +20,15 @@ const Blog = ({
     setShowDetail(!showDetail);
   };
 
-  const addLike = async (id) => {
-    const blogToUpdate = blogs.find((b) => b.id === id);
+  // const addLike = async (id) => {
+  //   const blogToUpdate = blogs.find((b) => b.id === id);
 
-    const updatedBlog = { ...blogToUpdate, likes: numberOfLikes + 1 };
+  //   const updatedBlog = { ...blogToUpdate, likes: numberOfLikes + 1 };
 
-    blogService.update(id, updatedBlog);
+  //   blogService.update(id, updatedBlog);
 
-    setNumberOfLikes(numberOfLikes + 1);
-  };
+  //   setNumberOfLikes(numberOfLikes + 1);
+  // };
 
 
   const showDeleteButton = () => {
