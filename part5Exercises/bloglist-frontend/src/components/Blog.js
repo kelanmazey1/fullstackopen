@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 
 import blogService from '../services/blogs';
 
-const Blog = ({
-  blog,
-  blogs,
-  deleteBlog,
-  currentUser,
-  addLike,
+const Blog = (props) => {
+  const {
+    blog,
+    blogs,
+    deleteBlog,
+    currentUser,
+  } = props;
 
-}) => {
   const [showDetail, setShowDetail] = useState(false);
   const [numberOfLikes, setNumberOfLikes] = useState(blog.likes);
 
@@ -20,15 +20,17 @@ const Blog = ({
     setShowDetail(!showDetail);
   };
 
-  // const addLike = async (id) => {
-  //   const blogToUpdate = blogs.find((b) => b.id === id);
+  const addLike = async (id) => {
+    const blogToUpdate = blogs.find((b) => b.id === id);
 
-  //   const updatedBlog = { ...blogToUpdate, likes: numberOfLikes + 1 };
+    const updatedBlog = { ...blogToUpdate, likes: numberOfLikes + 1 };
 
-  //   blogService.update(id, updatedBlog);
+    blogService.update(id, updatedBlog);
 
-  //   setNumberOfLikes(numberOfLikes + 1);
-  // };
+    setNumberOfLikes(numberOfLikes + 1);
+    // added to test if function is successfully called
+    props.mockLike();
+  };
 
 
   const showDeleteButton = () => {
