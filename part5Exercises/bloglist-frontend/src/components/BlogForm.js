@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const BlogForm = ({
-  concatNewBlog,
-  setNotification,
-  setIsError,
-  toggleVisibility,
-  currentUser,
-}) => {
+const BlogForm = (props) => {
+  const {
+    concatNewBlog,
+    setNotification,
+    setIsError,
+    toggleVisibility,
+    currentUser,
+  } = props;
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -22,6 +23,8 @@ const BlogForm = ({
       url,
       user: currentUser.id,
     };
+
+    props.mockAddBlog();
 
     const response = await blogService.createBlog(newBlog);
 
@@ -37,17 +40,19 @@ const BlogForm = ({
     <div>
       <form onSubmit={addBlog}>
         <div>
-          <label htmlFor="Title">Title: </label>
+          <label htmlFor="title">Title: </label>
           <input
+            data-testid="title"
             type="text"
             value={title}
-            name="Title"
+            name="title"
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
           <label htmlFor="Author">Author: </label>
           <input
+            data-testid="author"
             type="text"
             value={author}
             name="Author"
@@ -57,6 +62,7 @@ const BlogForm = ({
         <div>
           <label htmlFor="URL">URL: </label>
           <input
+            data-testid="url"
             type="text"
             value={url}
             name="URL"
