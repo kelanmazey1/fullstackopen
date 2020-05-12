@@ -9,7 +9,7 @@ describe('<BlogForm />', () => {
     username: 'test_username',
   };
 
-  test('blog is added when correct content', async () => {
+  test('blog is added when content is correct', async () => {
     const mockSetNotification = jest.fn();
     const mockSetError = jest.fn();
     const mockConcatBlog = jest.fn();
