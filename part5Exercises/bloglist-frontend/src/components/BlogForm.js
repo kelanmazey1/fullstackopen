@@ -23,8 +23,8 @@ const BlogForm = (props) => {
       url,
       user: currentUser.id,
     };
-
-    props.mockAddBlog();
+    // this is here from testing, leaving it here just in case I need to test again 
+    //props.mockAddBlog();
 
     const response = await blogService.createBlog(newBlog);
 
@@ -45,7 +45,7 @@ const BlogForm = (props) => {
             data-testid="title"
             type="text"
             value={title}
-            name="title"
+            name="Title"
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
@@ -69,7 +69,7 @@ const BlogForm = (props) => {
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type="submit">create</button>
+        <button id="create-button" type="submit">create</button>
       </form>
     </div>
   );

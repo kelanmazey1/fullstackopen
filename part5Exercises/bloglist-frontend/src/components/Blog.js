@@ -29,14 +29,14 @@ const Blog = (props) => {
 
     setNumberOfLikes(numberOfLikes + 1);
     // added to test if function is successfully called
-    props.mockLike();
+    // props.mockLike();
   };
 
 
   const showDeleteButton = () => {
     if (currentUser.username === blog.user.username) {
       return (
-        <button type="button" onClick={deleteBlog}>delete</button>
+        <button id="delete-button" type="button" onClick={deleteBlog}>delete</button>
       );
     }
   };
@@ -76,7 +76,7 @@ const Blog = (props) => {
         {blog.title}
         {' '}
         {blog.author}
-        <button onClick={handleShowHide}>{showDetail ? 'hide' : 'view'}</button>
+        <button id="detail-button" onClick={handleShowHide}>{showDetail ? 'hide' : 'view'}</button>
       </div>
       {showExtraDetail()}
     </div>

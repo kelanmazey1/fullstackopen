@@ -57,7 +57,7 @@ const App = () => {
     <div>
       { user === null
         ? (
-          <div>
+          <div className="loginInfo">
             <Notification notification={notification} isError={isError} />
             <LoginForm
               setUser={setUser}
@@ -68,38 +68,43 @@ const App = () => {
         )
         : (
           <div>
-            <p>
-              {user.name}
-              {' '}
-              logged in
-            </p>
-            <button type="submit" onClick={() => logoutUser()}>logout</button>
-
-            <h2>blogs</h2>
-            <Notification notification={notification} isError={isError} />
-            <h2>Create new</h2>
-            <Togglable buttonLabel="new blog" ref={blogFormRef}>
-              <BlogForm
-                toggleVisibility={() => blogFormRef.current.toggleVisibility()}
-                concatNewBlog={concatNewBlog}
-                setNotification={setNotification}
-                setIsError={setIsError}
-                currentUser={user}
-              />
-            </Togglable>
-            {blogs
-              .sort((a, b) => (a.likes > b.likes ? -1 : 1))
-              .map(
-                (blog) => (
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    blogs={blogs}
-                    deleteBlog={() => deleteBlog(blog.id)}
-                    currentUser={user}
-                  />
-                ),
-              )}
+            <div className="userInfo">
+              <p>
+                {user.name}
+                {' '}
+                logged in
+              </p>
+              <button type="submit" onClick={() => logoutUser()}>logout</button>
+            </div>
+            <div className="title">
+              <h2>blogs</h2>
+              <Notification notification={notification} isError={isError} />
+            </div>
+            <div className="blogs">
+              <h2>Create new</h2>
+              <Togglable buttonLabel="new blog" ref={blogFormRef}>
+                <BlogForm
+                  toggleVisibility={() => blogFormRef.current.toggleVisibility()}
+                  concatNewBlog={concatNewBlog}
+                  setNotification={setNotification}
+                  setIsError={setIsError}
+                  currentUser={user}
+                />
+              </Togglable>
+              {blogs
+                .sort((a, b) => (a.likes > b.likes ? -1 : 1))
+                .map(
+                  (blog) => (
+                    <Blog
+                      key={blog.id}
+                      blog={blog}
+                      blogs={blogs}
+                      deleteBlog={() => deleteBlog(blog.id)}
+                      currentUser={user}
+                    />
+                  ),
+                )}
+              </div>
           </div>
         )}
     </div>
