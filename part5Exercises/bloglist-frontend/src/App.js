@@ -41,16 +41,6 @@ const App = () => {
     setBlogs(blogs.concat(newBlog));
   };
 
-  // const addLike = async (id) => {
-  //   const blog = blogs.find((b) => b.id === id);
-
-  //   const updatedBlog = { ...blog, likes: blog.likes + 1 };
-
-  //   await blogService.update(id, updatedBlog);
-
-  //   setNumberOfLikes(numberOfLikes + 1);
-  // };
-
   const deleteBlog = async (id) => {
     const blogToDelete = blogs.find((b) => b.id === id);
     // eslint-disable-next-line no-alert
