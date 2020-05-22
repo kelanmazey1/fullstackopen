@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 
 import { createNewAnecdote } from '../reducers/anecdoteReducer';
 
-const AnecdoteForm = (props) => {
+const AnecdoteForm = () => {
   const dispatch = useDispatch();
 
   const addAnecdote = (event) => {
     event.preventDefault();
     const content = event.target.anecdote.value;
+    // eslint-disable-next-line no-param-reassign
     event.target.anecdote.value = '';
     dispatch(createNewAnecdote(content));
   };

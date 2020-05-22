@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { addVote } from '../reducers/anecdoteReducer';
+import { setNotification, removeNotification } from '../reducers/notificationReducer';
+
 
 const Anecdote = (props) => {
   const {
@@ -17,29 +19,44 @@ const Anecdote = (props) => {
         {content}
       </div>
       <div>
-        has {votes}
-        <button onClick={handleClick}>vote</button>
+        has
+        {' '}
+        {votes}
+        <button type="button" onClick={handleClick}>vote</button>
       </div>
     </div>
   );
 };
+// this is here so it doesn't reset each time the list renders
+let timer;
 
-const AnecdoteList = (props) => {
-  const anecdotes = useSelector(state => state);
+const AnecdoteList = () => {
+  const anecdotes = useSelector((state) => state.anecdotes);
+  const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
+
+  const handleAddVote = (id, content) => {
+    dispatch(setNotification(`You voted '${content}'`));
+    dispatch(addVote(id));
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => dispatch(removeNotification()), 5000);
+  };
 
   return (
     <div>
       {anecdotes
-        .sort((a,b) => (a.votes > b.votes ? -1 : 1))
-        .map(anecdote =>
+        .filter((a) => a.content.includes(filter))
+        .sort((a, b) => (a.votes > b.votes ? -1 : 1))
+        .map((anecdote) => (
           <Anecdote
             key={anecdote.id}
             content={anecdote.content}
             votes={anecdote.votes}
-            handleClick={() => dispatch(addVote(anecdote.id))}
-          />)
-      }
+            handleClick={() => handleAddVote(anecdote.id, anecdote.content)}
+          />
+        ))}
     </div>
   );
 };
