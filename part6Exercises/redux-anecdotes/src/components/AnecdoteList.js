@@ -34,7 +34,7 @@ const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
   const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
-  console.log('this is anecdotes', anecdotes);
+
   const handleAddVote = (id, content) => {
     dispatch(setNotification(`You voted '${content}'`));
     dispatch(addVote(id));

@@ -29,12 +29,12 @@ const reducer = (state = [], action) => {
 
 export const initializeAnecdotes = (anecdotes) => ({
   type: 'INIT_ANECDOTES',
-  data: anecdotes.map((anecdote) => ({ ...anecdote, id: getId(), votes: 0 }))
+  data: anecdotes.map((anecdote) => ({ ...anecdote, id: getId(), votes: 0 })),
 });
 
 export const createNewAnecdote = (content) => ({
   type: 'ADD_ANECDOTE',
-  data: asObject(content),
+  data: content,
 });
 
 export const addVote = (id) => ({
