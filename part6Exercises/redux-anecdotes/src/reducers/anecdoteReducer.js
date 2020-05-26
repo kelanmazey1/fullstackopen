@@ -1,11 +1,5 @@
 const getId = () => (100000 * Math.random()).toFixed(0);
 
-const asObject = (anecdote) => ({
-  anecdote,
-  id: getId(),
-  votes: 0,
-});
-
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_ANECDOTES':
@@ -29,7 +23,11 @@ const reducer = (state = [], action) => {
 
 export const initializeAnecdotes = (anecdotes) => ({
   type: 'INIT_ANECDOTES',
-  data: anecdotes.map((anecdote) => ({ ...anecdote, id: getId(), votes: 0 })),
+  data: anecdotes.map((anecdote) => ({
+    ...anecdote,
+    id: getId(),
+    votes: 0,
+  })),
 });
 
 export const createNewAnecdote = (content) => ({
