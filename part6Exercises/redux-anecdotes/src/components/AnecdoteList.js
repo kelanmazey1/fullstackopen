@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { addVote } from '../reducers/anecdoteReducer';
-import { setNotification, removeNotification } from '../reducers/notificationReducer';
+import { setTimedNotification } from '../reducers/notificationReducer';
 
 
 const Anecdote = (props) => {
@@ -28,20 +28,16 @@ const Anecdote = (props) => {
   );
 };
 // this is here so it doesn't reset each time the list renders
-let timer;
+// let timer;
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
   const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
-  const handleAddVote = (id, content) => {
-    dispatch(setNotification(`You voted '${content}'`));
-    dispatch(addVote(id));
-    if (timer) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(() => dispatch(removeNotification()), 5000);
+  const handleAddVote = (anecdote) => {
+    dispatch(setTimedNotification(`You voted '${anecdote.content}'`, 5));
+    dispatch(addVote(anecdote));
   };
 
   return (
@@ -54,7 +50,7 @@ const AnecdoteList = () => {
             key={anecdote.id}
             content={anecdote.content}
             votes={anecdote.votes}
-            handleClick={() => handleAddVote(anecdote.id, anecdote.content)}
+            handleClick={() => handleAddVote(anecdote, anecdote)}
           />
         ))}
     </div>

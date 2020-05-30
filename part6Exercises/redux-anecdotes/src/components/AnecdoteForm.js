@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { createNewAnecdote } from '../reducers/anecdoteReducer';
-import anecdoteService from '../services/anecdotes';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
@@ -12,8 +11,7 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value;
     // eslint-disable-next-line no-param-reassign
     event.target.anecdote.value = '';
-    const newAnecdote = await anecdoteService.createNew(content);
-    dispatch(createNewAnecdote(newAnecdote));
+    dispatch(createNewAnecdote(content));
   };
 
   return (
