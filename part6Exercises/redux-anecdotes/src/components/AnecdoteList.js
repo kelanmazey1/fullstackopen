@@ -27,8 +27,6 @@ const Anecdote = (props) => {
     </div>
   );
 };
-// this is here so it doesn't reset each time the list renders
-// let timer;
 
 const AnecdoteList = (props) => {
   const { anecdotes } = props;
