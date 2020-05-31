@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { addVote } from '../reducers/anecdoteReducer';
 import { setTimedNotification } from '../reducers/notificationReducer';
@@ -30,20 +30,16 @@ const Anecdote = (props) => {
 // this is here so it doesn't reset each time the list renders
 // let timer;
 
-const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes);
-  const filter = useSelector((state) => state.filter);
-  const dispatch = useDispatch();
-
+const AnecdoteList = (props) => {
+  const { anecdotes } = props;
   const handleAddVote = (anecdote) => {
-    dispatch(setTimedNotification(`You voted '${anecdote.content}'`, 5));
-    dispatch(addVote(anecdote));
+    props.setTimedNotification(`You voted '${anecdote.content}'`, 5);
+    props.addVote(anecdote);
   };
 
   return (
     <div>
       {anecdotes
-        .filter((a) => a.content.includes(filter))
         .sort((a, b) => (a.votes > b.votes ? -1 : 1))
         .map((anecdote) => (
           <Anecdote
@@ -57,4 +53,19 @@ const AnecdoteList = () => {
   );
 };
 
-export default AnecdoteList;
+const mapStateToProps = (state) => ({
+  anecdotes: state
+    .anecdotes
+    .filter((anecdote) => anecdote.content.includes(state.filter)),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setTimedNotification:
+    (notification, seconds) => dispatch(setTimedNotification(notification, seconds)),
+  addVote: (id) => dispatch(addVote(id)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AnecdoteList);

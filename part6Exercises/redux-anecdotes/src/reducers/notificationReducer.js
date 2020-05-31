@@ -8,7 +8,7 @@ const reducer = (state = '', action) => {
       return state;
   }
 };
-
+// action creators
 const removeNotification = () => ({
   type: 'REMOVE_NOTIFICATION',
   data: {
