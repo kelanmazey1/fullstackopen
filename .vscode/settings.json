@@ -1,0 +1,8 @@
+{
+    "eslint.workingDirectories": [
+        {
+            "directory": "part7Exercises",
+            "changeProcessCWD": true
+        }
+    ]
+}
