@@ -9,6 +9,8 @@ import {
   useHistory,
 } from 'react-router-dom';
 
+import { useField } from './hooks/index';
+
 const Menu = () => {
   const padding = {
     paddingRight: 5,
@@ -36,7 +38,7 @@ const Anecdote = ({ anecdote }) => (
     <div>
       for more info see
       {' '}
-      <a href={anecdote.info}>{anecdote.info}</a>
+      <a href={anecdote.info} target="_blank" rel="noopener noreferrer">{anecdote.info}</a>
       <br />
     </div>
   </div>
@@ -89,21 +91,27 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
-  const [info, setInfo] = useState('');
+  const content = useField('text');
+  const info = useField('text');
+  const author = useField('text');
 
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
     history.push('/');
+  };
+
+  const clearFields = () => {
+    content.clearValue();
+    info.clearValue();
+    author.clearValue();
   };
 
   return (
@@ -112,17 +120,35 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name="content" value={content} onChange={(e) => setContent(e.target.value)} />
+          <input
+            name="content"
+            value={content.value}
+            onChange={content.onChange}
+          />
         </div>
         <div>
           author
-          <input name="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input
+            name="author"
+            value={author.value}
+            onChange={author.onChange}
+          />
         </div>
         <div>
           url for more info
-          <input name="info" value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input
+            name="info"
+            value={info.value}
+            onChange={info.onChange}
+          />
         </div>
         <button type="submit">create</button>
+        <button
+          type="button"
+          onClick={() => clearFields()}
+        >
+          reset
+        </button>
       </form>
     </div>
   );
@@ -156,7 +182,9 @@ const App = () => {
   const addNew = (anecdote) => {
     // eslint-disable-next-line no-param-reassign
     anecdote.id = (Math.random() * 10000).toFixed(0);
+    // set anecdotes with new anecdotes apended
     setAnecdotes(anecdotes.concat(anecdote));
+    // set notification and timeout of 10 seconds
     setNotification(`a new anecdote '${anecdote.content}' created!`);
     setTimeout(() => setNotification(''), 10000);
   };
