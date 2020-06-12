@@ -1,0 +1,33 @@
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}  
+  .notification {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}  
+
+  .blog-details {
+  display: inline-block;
+}
+  .likes {
+    display: inline-block;
+  }
+
+  .blog {
+  padding: 2px;
+  border-style: solid;
+  border-width: 0.5px;
+  margin: 5px;
+
+}
