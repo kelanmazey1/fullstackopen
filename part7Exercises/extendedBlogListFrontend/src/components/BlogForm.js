@@ -1,15 +1,18 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import { useDispatch } from 'react-redux';
+
+import { setNotification } from '../reducers/notificationReducer';
+import { addNewBlog } from '../reducers/blogReducer';
 
 const BlogForm = (props) => {
   const {
-    concatNewBlog,
-    setNotification,
-    setIsError,
     toggleVisibility,
     currentUser,
   } = props;
+
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -23,14 +26,14 @@ const BlogForm = (props) => {
       url,
       user: currentUser.id,
     };
-    // this is here from testing, leaving it here just in case I need to test again 
-    //props.mockAddBlog();
+    // this is here from testing, leaving it here just in case I need to test again props.mockAddBlog();
 
-    const response = await blogService.createBlog(newBlog);
+    dispatch(addNewBlog(newBlog));
 
-    concatNewBlog(response);
-    setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`);
-    setIsError(false);
+    dispatch(setNotification({
+      text: `a new blog ${newBlog.title} by ${newBlog.author} added`,
+      error: false,
+    }));
     setTitle('');
     setAuthor('');
     setUrl('');

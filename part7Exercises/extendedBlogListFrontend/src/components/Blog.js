@@ -2,10 +2,15 @@
 /* eslint-disable linebreak-style */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import blogService from '../services/blogs';
 
+import { incrementLikes, showBlogDetail } from '../reducers/blogReducer';
+
 const Blog = (props) => {
+  const dispatch = useDispatch();
+
   const {
     blog,
     blogs,
@@ -18,6 +23,7 @@ const Blog = (props) => {
 
   const handleShowHide = () => {
     setShowDetail(!showDetail);
+    dispatch(showBlogDetail(showDetail));
   };
 
   const addLike = async (id) => {
@@ -26,12 +32,11 @@ const Blog = (props) => {
     const updatedBlog = { ...blogToUpdate, likes: numberOfLikes + 1 };
 
     blogService.update(id, updatedBlog);
-
+    dispatch(incrementLikes(id));
     setNumberOfLikes(numberOfLikes + 1);
     // added to test if function is successfully called
     // props.mockLike();
   };
-
 
   const showDeleteButton = () => {
     if (currentUser.username === blog.user.username) {

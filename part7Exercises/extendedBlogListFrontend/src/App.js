@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
@@ -9,17 +11,24 @@ import Togglable from './components/Togglable';
 
 import blogService from './services/blogs';
 
+import { initializeBlogs } from './reducers/blogReducer';
+import { setUser } from './reducers/userReducer';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
-  const [isError, setIsError] = useState(false);
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blog);
+  console.log('this is blogs after useSelector', blogs);
+  // const user = useSelector((state) => state.user);
+  const notification = useSelector((state) => state.notification);
 
+  const [oldBlogs, setBlogs] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    blogService
+      .getAll()
+      .then((blogs) => dispatch(initializeBlogs(blogs)));
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -53,16 +62,16 @@ const App = () => {
     }
   };
 
+  console.log(user);
+
   return (
     <div>
       { user === null
         ? (
           <div className="loginInfo">
-            <Notification notification={notification} isError={isError} />
+            <Notification notification={notification.text} isError={notification.error} />
             <LoginForm
               setUser={setUser}
-              setNotification={setNotification}
-              setIsError={setIsError}
             />
           </div>
         )
@@ -78,7 +87,7 @@ const App = () => {
             </div>
             <div className="title">
               <h2>blogs</h2>
-              <Notification notification={notification} isError={isError} />
+              <Notification notification={notification.text} isError={notification.error} />
             </div>
             <div className="blogs">
               <h2>Create new</h2>
@@ -86,8 +95,6 @@ const App = () => {
                 <BlogForm
                   toggleVisibility={() => blogFormRef.current.toggleVisibility()}
                   concatNewBlog={concatNewBlog}
-                  setNotification={setNotification}
-                  setIsError={setIsError}
                   currentUser={user}
                 />
               </Togglable>
@@ -104,7 +111,7 @@ const App = () => {
                     />
                   ),
                 )}
-              </div>
+            </div>
           </div>
         )}
     </div>

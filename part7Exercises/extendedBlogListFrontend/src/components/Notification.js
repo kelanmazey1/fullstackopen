@@ -1,13 +1,16 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-const Notification = ({ notification, isError }) => {
-  if (notification === null) {
+const Notification = () => {
+  const notification = useSelector((state) => state.notification);
+
+  if (notification.text === null) {
     return null;
   }
 
   let className = null;
 
-  if (isError) {
+  if (notification.error) {
     className = 'error';
   } else {
     className = 'notification';
@@ -15,7 +18,7 @@ const Notification = ({ notification, isError }) => {
 
   return (
     <div className={className}>
-      {notification}
+      {notification.text}
     </div>
   );
 };
