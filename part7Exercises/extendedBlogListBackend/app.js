@@ -17,7 +17,7 @@ logger.info('connecting to ', config.MONGODB_URI);
 mongoose.connect(config.MONGODB_URI,
   {
     useNewUrlParser: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
     useUnifiedTopology: true,
   })
   .then(() => {
@@ -44,6 +44,5 @@ if (process.env.NODE_ENV === 'test') {
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
-
 
 module.exports = app;

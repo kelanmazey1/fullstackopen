@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable import/prefer-default-export */
 import blogService from '../services/blogs';
 
@@ -8,17 +9,30 @@ const reducer = (state = [], action) => {
 
     case 'ADD_BLOG':
       return [...state, action.data];
-    // case 'SHOW_DETAIL':
-    //   console.log('showing detail action', action.data);
-    //   return action.data;
-    // case 'INCREMENT_LIKES':
-    //   console.log('adding a like', action.data);
-    //   return action.data;
+
+    case 'INCREMENT_LIKES':
+      // find blog to add like
+      const blogToAddLikeTo = state.find((b) => b.id === action.data.id);
+      // submit new blog with likes incremented
+      const blogLikeAdded = {
+        ...blogToAddLikeTo,
+        likes: blogToAddLikeTo.likes + 1,
+      };
+      // return array with updated blog
+      return state.map((blog) => (blog.id !== action.data.id ? blog : blogLikeAdded));
+
+    case 'DELETE_BLOG':
+      // find blog
+      const blogToDelete = state.find((b) => b.id === action.data.id);
+      // return array with blog omitted
+      return state.filter((blog) => (blog.id !== blogToDelete.id));
+
     default:
       return state;
   }
 };
 
+// action creators
 export const initializeBlogs = (blogs) => ({
   type: 'INIT_BLOGS',
   data: blogs,
@@ -32,14 +46,29 @@ export const addNewBlog = (blogToBeAdded) => async (dispatch) => {
   });
 };
 
+export const deleteBlog = (id) => async (dispatch) => {
+  await blogService.deleteBlog(id);
+  dispatch({
+    type: 'DELETE_BLOG',
+    data: { id },
+  });
+};
+
 export const showBlogDetail = (detail) => ({
   type: 'SHOW_DETAIL',
   data: detail,
 });
 
-export const incrementLikes = (id) => ({
-  type: 'INCREMENT_LIKES',
-  data: { id },
-});
+export const incrementLikes = (blog) => async (dispatch) => {
+  const { id, likes } = blog;
+  await blogService.update(id, {
+    ...blog,
+    likes: likes + 1,
+  });
+  dispatch({
+    type: 'INCREMENT_LIKES',
+    data: { id },
+  });
+};
 
 export default reducer;

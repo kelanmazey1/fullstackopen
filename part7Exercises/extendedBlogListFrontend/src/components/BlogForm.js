@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { setNotification } from '../reducers/notificationReducer';
+import { setNotification, clearNotification } from '../reducers/notificationReducer';
 import { addNewBlog } from '../reducers/blogReducer';
 
 const BlogForm = (props) => {
@@ -24,7 +24,7 @@ const BlogForm = (props) => {
       title,
       author,
       url,
-      user: currentUser.id,
+      user: currentUser,
     };
     // this is here from testing, leaving it here just in case I need to test again props.mockAddBlog();
 
@@ -37,6 +37,7 @@ const BlogForm = (props) => {
     setTitle('');
     setAuthor('');
     setUrl('');
+    setTimeout(() => dispatch(clearNotification()), 5000);
   };
 
   return (

@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 
 import loginService from '../services/login';
 
-import { setNotification } from '../reducers/notificationReducer';
+import { setNotification, clearNotification } from '../reducers/notificationReducer';
+import { setUser } from '../reducers/userReducer';
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = () => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -22,17 +23,14 @@ const LoginForm = ({ setUser }) => {
       );
       setUsername('');
       setPassword('');
-      setUser(userLogin);
+      dispatch(setUser(userLogin));
     } catch (exception) {
       dispatch(setNotification({
         text: 'Wrong Credentials',
         error: true,
       }));
       setTimeout(() => {
-        dispatch(setNotification({
-          text: null,
-          error: false,
-        }));
+        dispatch(clearNotification());
       }, 5000);
     }
   };

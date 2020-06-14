@@ -4,44 +4,33 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import blogService from '../services/blogs';
-
-import { incrementLikes, showBlogDetail } from '../reducers/blogReducer';
+import { incrementLikes, showBlogDetail, deleteBlog } from '../reducers/blogReducer';
 
 const Blog = (props) => {
   const dispatch = useDispatch();
 
   const {
     blog,
-    blogs,
-    deleteBlog,
     currentUser,
   } = props;
 
   const [showDetail, setShowDetail] = useState(false);
-  const [numberOfLikes, setNumberOfLikes] = useState(blog.likes);
 
   const handleShowHide = () => {
     setShowDetail(!showDetail);
     dispatch(showBlogDetail(showDetail));
   };
 
-  const addLike = async (id) => {
-    const blogToUpdate = blogs.find((b) => b.id === id);
-
-    const updatedBlog = { ...blogToUpdate, likes: numberOfLikes + 1 };
-
-    blogService.update(id, updatedBlog);
-    dispatch(incrementLikes(id));
-    setNumberOfLikes(numberOfLikes + 1);
-    // added to test if function is successfully called
-    // props.mockLike();
-  };
-
-  const showDeleteButton = () => {
+  const showDeleteButton = (id) => {
     if (currentUser.username === blog.user.username) {
       return (
-        <button id="delete-button" type="button" onClick={deleteBlog}>delete</button>
+        <button
+          id="delete-button"
+          type="button"
+          onClick={() => dispatch(deleteBlog(id))}
+        >
+          delete
+        </button>
       );
     }
   };
@@ -56,10 +45,10 @@ const Blog = (props) => {
           <div className="likes">
             likes
             {' '}
-            {numberOfLikes}
+            {blog.likes}
             <button
               type="submit"
-              onClick={() => addLike(blog.id)}
+              onClick={() => dispatch(incrementLikes(blog))}
             >
               like
             </button>
@@ -68,7 +57,7 @@ const Blog = (props) => {
             {blog.user.name}
           </div>
           <div>
-            {showDeleteButton()}
+            {showDeleteButton(blog.id)}
           </div>
         </div>
       );
@@ -96,8 +85,6 @@ Blog.propTypes = {
     user: PropTypes.object,
     likes: PropTypes.number,
   }).isRequired,
-  blogs: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deleteBlog: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
     username: PropTypes.string,
     name: PropTypes.string,

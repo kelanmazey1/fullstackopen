@@ -17,4 +17,9 @@ export const setNotification = (notification) => ({
   data: notification,
 });
 
+export const clearNotification = () => ({
+  type: 'SET_NOTIFICATION',
+  data: initialState,
+});
+
 export default reducer;

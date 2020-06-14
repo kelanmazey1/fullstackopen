@@ -1,16 +1,21 @@
 const reducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_USER':
-      console.log('user action', action.data);
       return action.data;
+    case 'LOGOUT_USER':
+      return null;
     default:
       return state;
   }
 };
 
-export const setNotification = (user) => ({
+export const setUser = (user) => ({
   type: 'SET_USER',
-  data: { user },
+  data: user,
+});
+
+export const logOutUser = () => ({
+  type: 'LOGOUT_USER',
 });
 
 export default reducer;
