@@ -9,6 +9,10 @@ import {
   Link,
 } from 'react-router-dom';
 
+import {
+  List,
+} from '@material-ui/core';
+
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
@@ -100,19 +104,21 @@ const App = () => {
                         toggleVisibility={() => blogFormRef.current.toggleVisibility()}
                       />
                     </Togglable>
-                    {blogs
-                    // sort the blogs by number of likes
-                      .sort((a, b) => (a.likes > b.likes ? -1 : 1))
-                      .map(
-                        (blog) => (
-                          <Link key={blog.id} to={`/blogs/${blog.id}`}>
-                            <Blog
-                              blog={blog}
-                              currentUser={user}
-                            />
-                          </Link>
-                        ),
-                      )}
+                    <List>
+                      {blogs
+                      // sort the blogs by number of likes
+                        .sort((a, b) => (a.likes > b.likes ? -1 : 1))
+                        .map(
+                          (blog) => (
+                            <Link key={blog.id} to={`/blogs/${blog.id}`}>
+                              <Blog
+                                blog={blog}
+                                currentUser={user}
+                              />
+                            </Link>
+                          ),
+                        )}
+                    </List>
                   </div>
                 </div>
               </Route>

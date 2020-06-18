@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import {
+  TextField,
+  Button,
+  Typography,
+} from '@material-ui/core';
+
 import loginService from '../services/login';
 
 import { setNotification, clearNotification } from '../reducers/notificationReducer';
@@ -10,6 +16,10 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const marginBottom = {
+    marginBottom: '0.5em',
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -36,11 +46,11 @@ const LoginForm = () => {
   };
   return (
     <div>
-      <h2>Login</h2>
+      <Typography variant="h3" gutterBottom>Login</Typography>
       <form onSubmit={handleLogin}>
         <div>
-          username
-          <input
+          <TextField
+            placeholder="username"
             id="username"
             type="text"
             value={username}
@@ -49,16 +59,24 @@ const LoginForm = () => {
           />
         </div>
         <div>
-          password
-          <input
+          <TextField
+            placeholder="password"
             id="password"
             type="password"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
+            style={marginBottom}
           />
         </div>
-        <button id="login-button" type="submit">login</button>
+        <Button
+          id="login-button"
+          type="submit"
+          size="small"
+          variant="outlined"
+        >
+          login
+        </Button>
       </form>
     </div>
   );

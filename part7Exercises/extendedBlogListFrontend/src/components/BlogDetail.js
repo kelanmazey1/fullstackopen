@@ -11,8 +11,6 @@ const BlogDetail = ({ blog }) => {
     event.preventDefault();
     const commentContent = event.target.comment.value;
     dispatch(addCommentAction(blogToAddCommentTo, commentContent));
-    console.log('blog to add comment to', blogToAddCommentTo);
-    console.log('comment content', commentContent);
     // eslint-disable-next-line no-param-reassign
     event.target.comment.value = '';
   };

@@ -1,8 +1,21 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+
+import {
+  Tabs,
+  Tab,
+  Paper,
+  Button,
+} from '@material-ui/core';
 
 import { logOutUser } from '../reducers/userReducer';
+
+// const LinkTab = (props) => (
+//   <Tab
+//     component="RouterLink"
+//     onClick
+// )
 
 const LoggedInDisplay = ({ user }) => {
   const dispatch = useDispatch();
@@ -12,30 +25,22 @@ const LoggedInDisplay = ({ user }) => {
     window.localStorage.removeItem('loggedBlogappUser');
   };
 
-  const navBarContainer = {
-    backgroundColor: 'lightgray',
-    width: '100%',
-  };
-
-  const navBarElements = {
-    paddingLeft: '0.2em',
-    paddingRight: '0.2em',
-    display: 'inline-block',
-  };
-
   return (
-    <div style={navBarContainer}>
-      <Link style={navBarElements} to="/">blogs</Link>
-      <Link style={navBarElements} to="/users">users</Link>
-      <div style={navBarElements} className="userInfo">
-        <p>
-          {user.name}
-          {' '}
-          logged in
-        </p>
-      </div>
-      <button style={navBarElements} type="submit" onClick={() => logoutUser()}>logout</button>
-    </div>
+    <Paper square>
+      <Tabs>
+        <Tab label="Blogs" to="/" component={RouterLink} />
+        <Tab label="Users" to="/users" component={RouterLink} />
+        <Tab label={`${user.name} logged in`} className="userInfo" />
+        <Button
+          variant="outlined"
+          color="secondary"
+          type="submit"
+          onClick={() => logoutUser()}
+        >
+          logout
+        </Button>
+      </Tabs>
+    </Paper>
   );
 };
 

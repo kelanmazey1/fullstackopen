@@ -17,7 +17,6 @@ blogRouter.post('/', async (request, response) => {
   const decodedToken = jwt.verify(token, process.env.SECRET);
 
   const user = await User.findById(decodedToken.id);
-
   const blog = new Blog({
     title: body.title,
     author: body.author,
@@ -53,14 +52,18 @@ blogRouter.delete('/:id', async (request, response) => {
 });
 
 blogRouter.put('/:id', async (request, response) => {
-  const { body } = request;
+  const { body, token } = request;
+
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+
+  const user = await User.findById(decodedToken.id);
 
   const updatedBlog = {
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: body.user.id,
+    user,
     comments: body.comments,
   };
 
@@ -70,7 +73,6 @@ blogRouter.put('/:id', async (request, response) => {
     { runValidators: true, new: true },
   );
   // updated blog returns the user as a string, this is adding the object back in its place
-  console.log(returnedBlog);
   response.json(returnedBlog.toJSON());
 });
 

@@ -79,6 +79,7 @@ export const incrementLikes = (blog) => async (dispatch) => {
     ...blog,
     likes: likes + 1,
   });
+
   dispatch({
     type: 'INCREMENT_LIKES',
     data: { id },
