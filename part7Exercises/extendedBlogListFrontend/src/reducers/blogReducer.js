@@ -21,6 +21,8 @@ const reducer = (state = [], action) => {
       // return array with updated blog
       return state.map((blog) => (blog.id !== action.data.id ? blog : blogLikeAdded));
 
+    case 'ADD_COMMENT':
+      return state.map((blog) => (blog.id !== action.data.id ? blog : action.data));
     case 'DELETE_BLOG':
       // find blog
       const blogToDelete = state.find((b) => b.id === action.data.id);
@@ -58,6 +60,18 @@ export const showBlogDetail = (detail) => ({
   type: 'SHOW_DETAIL',
   data: detail,
 });
+
+export const addCommentAction = (blog, comment) => async (dispatch) => {
+  const { id, comments } = blog;
+  const updatedBlog = await blogService.update(id, {
+    ...blog,
+    comments: [...comments, comment],
+  });
+  dispatch({
+    type: 'ADD_COMMENT',
+    data: updatedBlog,
+  });
+};
 
 export const incrementLikes = (blog) => async (dispatch) => {
   const { id, likes } = blog;

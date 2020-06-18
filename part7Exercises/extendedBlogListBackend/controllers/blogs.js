@@ -24,6 +24,7 @@ blogRouter.post('/', async (request, response) => {
     url: body.url,
     user,
     likes: body.likes ? body.likes : 0,
+    comments: [],
   });
 
   const newBlog = await blog.save();
@@ -60,15 +61,16 @@ blogRouter.put('/:id', async (request, response) => {
     url: body.url,
     likes: body.likes,
     user: body.user.id,
+    comments: body.comments,
   };
 
   const returnedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
     updatedBlog,
-    { runValidators: true },
+    { runValidators: true, new: true },
   );
   // updated blog returns the user as a string, this is adding the object back in its place
-
+  console.log(returnedBlog);
   response.json(returnedBlog.toJSON());
 });
 

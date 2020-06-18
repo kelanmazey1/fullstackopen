@@ -13,7 +13,6 @@ const Blog = (props) => {
     blog,
     currentUser,
   } = props;
-
   const showDeleteButton = (id) => {
     if (currentUser.username === blog.user.username) {
       return (

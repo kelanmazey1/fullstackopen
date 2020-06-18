@@ -17,7 +17,7 @@ import Togglable from './components/Togglable';
 import LoggedInDisplay from './components/LoggedInDisplay';
 import UsersInfo from './components/UsersInfo';
 import UserInfo from './components/UserInfo';
-import BlogInfo from './components/BlogInfo';
+import BlogDetail from './components/BlogDetail';
 
 import blogService from './services/blogs';
 
@@ -59,7 +59,7 @@ const App = () => {
     : null;
 
   const blogMatch = useRouteMatch('/blogs/:id');
-  const blogInfo = blogMatch
+  const blogDetail = blogMatch
     ? blogs.find((blog) => blog.id === blogMatch.params.id)
     : null;
 
@@ -76,9 +76,10 @@ const App = () => {
         )
         : (
           <div>
+            {/* Navigation menu included in the LoggedInDisplay */}
             <LoggedInDisplay user={user} />
             <div className="title">
-              <h2>blogs</h2>
+              <h2>blog app</h2>
               <Notification notification={notification.text} isError={notification.error} />
             </div>
             <Switch>
@@ -89,13 +90,12 @@ const App = () => {
                 <UsersInfo users={usersInfo} />
               </Route>
               <Route path="/blogs/:id">
-                <BlogInfo blog={blogInfo} />
+                <BlogDetail blog={blogDetail} />
               </Route>
               <Route path="/">
                 <div>
                   <div className="blogs">
-                    <h2>Create new</h2>
-                    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+                    <Togglable buttonLabel="create new" ref={blogFormRef}>
                       <BlogForm
                         toggleVisibility={() => blogFormRef.current.toggleVisibility()}
                       />
