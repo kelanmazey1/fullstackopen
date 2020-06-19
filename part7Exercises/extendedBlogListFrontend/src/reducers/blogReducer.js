@@ -1,6 +1,8 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable import/prefer-default-export */
 import blogService from '../services/blogs';
+// used to inform the reducer handling users that a user has added a blog
+import { userAddedBlog } from './usersInfoReducer';
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -42,6 +44,7 @@ export const initializeBlogs = (blogs) => ({
 
 export const addNewBlog = (blogToBeAdded) => async (dispatch) => {
   const newBlog = await blogService.createBlog(blogToBeAdded);
+  dispatch(userAddedBlog(newBlog.user));
   dispatch({
     type: 'ADD_BLOG',
     data: newBlog,

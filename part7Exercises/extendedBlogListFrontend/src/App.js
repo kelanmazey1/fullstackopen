@@ -91,7 +91,7 @@ const App = () => {
                 <UserInfo user={userInfo} />
               </Route>
               <Route path="/users">
-                <UsersInfo users={usersInfo} />
+                <UsersInfo currentBlogs={blogs} />
               </Route>
               <Route path="/blogs/:id">
                 <BlogDetail blog={blogDetail} />
