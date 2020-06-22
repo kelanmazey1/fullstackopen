@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 
-const UsersInfo = ({ currentBlogs }) => {
+const UsersInfo = () => {
   const users = useSelector((state) => state.usersInfo);
-  const currentBlogsIDs = currentBlogs.map((blog) => blog.id);
 
   return (
     <div>
