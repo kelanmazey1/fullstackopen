@@ -111,13 +111,6 @@ const resolvers = {
       } else {
         return booksInGenre
       }
-      // } else if (!author && genre) {
-      //   return booksInGenre
-      // } else {
-      //   const booksInGenreAndByAuthor = booksWrittenByAuthor.filter((book) =>
-      //     booksInGenre.includes(book));
-      //   return booksInGenreAndByAuthor;
-      // }
     },
     allAuthors: () => Author.find({}),
     me: (root, args, context) => {
