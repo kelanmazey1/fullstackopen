@@ -11,6 +11,8 @@ const Books = (props) => {
     return null
   }
 
+  console.log('result.data all books query', result.data)
+
   const books = result.data.allBooks;
 
   return (
@@ -31,7 +33,7 @@ const Books = (props) => {
           {books.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           )}
