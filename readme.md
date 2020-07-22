@@ -1,4 +1,4 @@
-# Repo for use in MOOC Full Stack Course
+# Repo for use in MOOC Full Stack Open Course
 [link to course page](http://www.fullstackopen.com/en) <br/>
 Part 1 - React <br/>
 Part 2 - Communicating with Server <br/>
