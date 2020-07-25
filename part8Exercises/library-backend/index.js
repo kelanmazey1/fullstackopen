@@ -23,12 +23,6 @@ mongoose.connect(process.env.MONGODB_URI, {
     console.log('error connecting to MongoDB', error.message);
   });
 
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-*/
-
-
 const typeDefs = gql`
   type Book {
     title: String!
@@ -36,6 +30,11 @@ const typeDefs = gql`
     published: Int!
     genres: [String!]!
     id: ID!
+  }
+
+  type BookList {
+    genre: String,
+    books: [Book!]
   }
 
   type Author {
@@ -57,10 +56,11 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(
+    getBooks(
       author: String
       genre: String
-      ): [Book!]
+      showRecommended: Boolean!
+      ): BookList
     allAuthors: [Author!]
     me: User
   }
@@ -91,31 +91,47 @@ const resolvers = {
   Query: {
     bookCount: ()  => Book.collection.countDocuments(),
     authorCount: ()  => Author.collection.countDocuments(),
-    allBooks: async (root, args) => {
-      const { author, genre } = args;
-      const books = await Book.find({})
+    getBooks: async (root, args, context) => {
+      const { showRecommended } = args;
+      const { currentUser } = context;
+
+      let userFavGenre;
+      // if there is a user in the context and recommended books are requested set genre
+      if (currentUser && showRecommended) {
+        userFavGenre = currentUser.favouriteGenre;
+      }
+
+      // otherwise return all books in the DB
+        const books = await Book.find({})
         .populate('author', {
           name: 1,
-          bookCount: 1, 
+          bookCount: 1,
+          genres: 1, 
         });
-      const authors = await Author.find({});
+        // filter list of books
+        const booksInGenre = books.filter((book) =>
+          book.genres.includes(userFavGenre) || book.genres.map((genre) => genre.toLowerCase()).includes(userFavGenre)
+        );
+        
+        if (!userFavGenre) {
+          return {
+            genre: 'all',
+            books
+          }
+        } else {
+          return {
+            genre: userFavGenre,
+            books: booksInGenre
+          }
+        }
       
-      const booksWrittenByAuthor = books.filter((book) =>
-        book.author.currentAuthorNames === author);
 
-      const booksInGenre = books.filter((book) => 
-        book.genres.includes(genre));
-      
-      if (!genre) {
-        return books
-      } else {
-        return booksInGenre
-      }
+
     },
     allAuthors: () => Author.find({}),
     me: (root, args, context) => {
       if (!context.currentUser) {
-        throw new AuthenticationError("not authenticat")
+        throw new AuthenticationError("not authenticated")
       }
       return context.currentUser;
     }
@@ -184,7 +200,7 @@ const resolvers = {
           });
         });
     },
-    login: async(root, args) => {
+    login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
 
       if ( !user || args.password !== 'secret' ) {
@@ -195,7 +211,7 @@ const resolvers = {
         username: user.username,
         id: user._id,
       }
-
+     
       return { value: jwt.sign(userForToken, process.env.SECRET) }
     }
 

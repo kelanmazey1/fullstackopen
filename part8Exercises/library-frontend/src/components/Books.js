@@ -1,24 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 
-import { ALL_BOOKS } from '../queries';
+import { GET_BOOKS } from '../queries';
 
-const Books = (props) => {
-  const result = useQuery(ALL_BOOKS);
+const Books = ({ showRecommended, genreSelect, setGenreSelect }) => {
+
+  const result = useQuery(GET_BOOKS, {
+    variables: { showRecommended },
+    onCompleted: (result) => {
+      if (showRecommended) {
+        setGenreSelect(result.getBooks.genre)
+      }
+    }
+  });
+
+
   if (result.loading) { return <div>loading...</div> }
-  
-  if (!props.show) {
-    return null
-  }
+  const booksList = result.data.getBooks.books;
 
-  console.log('result.data all books query', result.data)
-
-  const books = result.data.allBooks;
+  const genres = booksList
+  // map books genres to an array of arrays
+    .map((book) => book.genres)
+  // reduce array down to one array of all genres
+    .reduce((accumulator, currentValue) => (accumulator.concat(currentValue)), ['All Genres'])
+  // filter array to only contain each unique genrey
+    .filter((genre, index, arr) => arr.indexOf(genre) === index);
 
   return (
     <div>
-      <h2>books</h2>
-
+      <h2>Books</h2>
+      <div>
+        in genre <span style={{ fontWeight: "bold" }}>{genreSelect ? genreSelect : "any"}</span>
+        {' '}
+        {showRecommended
+          ? null
+          : <div>
+              select: <select value={genreSelect} onChange={({ target }) => setGenreSelect(target.value)}>
+              {
+                genres.map((genre) => 
+                  <option key={genre} value={genre}>{genre}</option>
+              )}
+              </select>
+            </div>
+        }
+        
+      </div>
       <table>
         <tbody>
           <tr>
@@ -30,12 +56,21 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {books.map(a =>
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
+          {genreSelect === 'All Genres' || showRecommended
+          ? booksList.map((a) => 
+              <tr key={a.title}>
+                <td>{a.title}</td>
+                <td>{a.author.name}</td>
+                <td>{a.published}</td>
+              </tr>)
+          : booksList
+              .filter((book) => book.genres.includes(genreSelect))
+              .map(a =>
+              <tr key={a.title}>
+                <td>{a.title}</td>
+                <td>{a.author.name}</td>
+                <td>{a.published}</td>
+              </tr>
           )}
         </tbody>
       </table>
