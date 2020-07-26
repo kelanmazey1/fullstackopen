@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useSubscription } from '@apollo/client';
 
-import { ADD_BOOK, GET_BOOKS, ALL_AUTHORS } from '../queries';
+import { ADD_BOOK, GET_BOOKS, ALL_AUTHORS, BOOK_ADDED } from '../queries';
 
-const NewBook = () => {
+
+const NewBook = ({ updateCacheWith }) => {
   const [title, setTitle] = useState('')
   const [author, setAuhtor] = useState('')
   const [published, setPublished] = useState('')
@@ -14,6 +15,13 @@ const NewBook = () => {
     refetchQueries: [{ query: GET_BOOKS, variables: { showRecommended: false } }, { query: ALL_AUTHORS }],
     awaitRefetchQueries: true,
   });
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`${subscriptionData.data.bookAdded.title} added`);
+      updateCacheWith(subscriptionData.data.bookAdded);
+    }
+  })
 
   if (result.loading) { return <div>getting tired of loading...</div>}
 

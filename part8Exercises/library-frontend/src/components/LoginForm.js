@@ -22,7 +22,7 @@ const LoginForm = ({ setToken }) => {
       // add token to local storage
       localStorage.setItem('library-user-token', token);
     }
-  }, [result.data]);
+  }, [result.data, setToken]);
   const loginSubmit = async (event) => {
     event.preventDefault();
     login({ variables: { username, password } });

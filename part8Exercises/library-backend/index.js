@@ -1,4 +1,4 @@
-const { ApolloServer, gql, UserInputError, AuthenticationError } = require('apollo-server');
+const { ApolloServer, gql, UserInputError, AuthenticationError, PubSub } = require('apollo-server');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -22,6 +22,8 @@ mongoose.connect(process.env.MONGODB_URI, {
   .catch((error) => {
     console.log('error connecting to MongoDB', error.message);
   });
+
+const pubsub = new PubSub();
 
 const typeDefs = gql`
   type Book {
@@ -51,6 +53,10 @@ const typeDefs = gql`
 
   type Token {
     value: String!
+  }
+
+  type Subscription {
+    bookAdded: Book!
   }
 
   type Query {
@@ -124,11 +130,8 @@ const resolvers = {
             books: booksInGenre
           }
         }
-      
-
-
     },
-    allAuthors: () => Author.find({}),
+    allAuthors: () => Author.find({}).populate('bookCount'),
     me: (root, args, context) => {
       if (!context.currentUser) {
         throw new AuthenticationError("not authenticated")
@@ -171,6 +174,9 @@ const resolvers = {
           invalidArgs: args,
         })
       }
+
+      pubsub.publish('BOOK_ADDED', { bookAdded: book });
+
       return book;
     },
     editAuthor: async (root, args, context) => {
@@ -217,6 +223,11 @@ const resolvers = {
 
   },
 
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
+  },
   Author: {
     bookCount: async (root) => {
       // get all books currently in the DB

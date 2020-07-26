@@ -10,10 +10,13 @@ import {
 
 import { useApolloClient } from '@apollo/client';
 
+
+
 import Authors from './components/Authors';
 import Books from './components/Books';
 import NewBook from './components/NewBook';
 import LoginForm from './components/LoginForm';
+import { GET_BOOKS } from './queries';
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -28,6 +31,21 @@ const App = () => {
       setToken(token);
     }
   }, [token]);
+
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map((p) => p.id).includes(object.id);
+    
+    const dataInStore = client.readQuery({ query: GET_BOOKS, variables: { showRecommended: false } });
+
+    if (!includedIn(dataInStore.getBooks.books, addedBook)) {
+      client.writeQuery({
+        query: GET_BOOKS,
+        variables: { showRecommended: false },
+        data: { allPersons: dataInStore.getBooks.books.concat(addedBook) }
+      });
+    }
+  }
 
   const padding = { padding: 5 };
   const logout = () => {
@@ -70,7 +88,7 @@ const App = () => {
           />
         </Route>
         <Route path="/add-book">  
-          <NewBook />
+          <NewBook updateCacheWith={updateCacheWith} />
         </Route>
         <Route path="/reccomended">  
           {token ? <Books showRecommended={showRecommended} genreSelect={genreSelect} setGenreSelect={setGenreSelect} /> : <Redirect to="/authors" />}

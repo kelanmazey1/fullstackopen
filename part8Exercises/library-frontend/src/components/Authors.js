@@ -1,5 +1,5 @@
   
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/client';
 
 import BirthyearForm from './BirthyearForm';
