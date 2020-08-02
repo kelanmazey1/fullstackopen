@@ -31,37 +31,37 @@ const getTargetAndHours = (args: Array<string>): ExerciseInputs => {
     if (isNaN(element)) {
       arrayIsAllNumbers = false;
     }
-})
+});
   if (!isNaN(target) && arrayIsAllNumbers) {
     return {
       target,
       exerciseHours,
-    }
+    };
   } else {
     throw new Error('One of more values given was not a number');
   }
-}
+};
 
 const getRating = (targetVsActual: number): RatingWithInfo => {
   if (targetVsActual < -1) {
     return {
       rating: 1,
       ratingDescription: 'a pretty lazy week I must say'
-    }
+    };
    } else if (targetVsActual > 1) {
     return {
       rating: 3,
       ratingDescription: 'great week you should be proud' 
-    }
+    };
   } else {
     return {
       rating: 2,
       ratingDescription: 'meh, could be worse could be better'
-    }
+    };
   }
-}
+};
 
-const calculateExercise = (exerciseHours: Array<number>, target: number): ExerciseInfo  => {
+export const calculateExercise = (exerciseHours: Array<number>, target: number): ExerciseInfo  => {
 
   const averageTime = exerciseHours.reduce((accumulator, currentValue) => {
     return accumulator + currentValue;
@@ -83,12 +83,12 @@ const calculateExercise = (exerciseHours: Array<number>, target: number): Exerci
     targetReached,
     rating,
     ratingDescription  
-  }
-}
+  };
+};
 
 try {
   const { target, exerciseHours } = getTargetAndHours(process.argv);
   console.log(calculateExercise(exerciseHours, target));
 } catch (e) {
-  console.log('Error, something horrible has happened, more info here ---> ', e.message);
+  console.log('Error, something horrible has happened, more info here ---> ', e.message); // eslint-disable-line
 }

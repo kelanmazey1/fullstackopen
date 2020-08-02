@@ -11,13 +11,13 @@ const getWeightAndHeight = (args: Array<string>): Inputs => {
     return {
       weight: Number(args[2]),
       height: Number(args[3]),
-    }
+    };
   } else {
     throw new Error('One or more values given was not a number');
   }
-}
+};
 
-const calculateBmi = (weight: number, height: number): string => {
+export const calculateBmi = (weight: number, height: number): string => {
   const bmi = weight/(height/100) ** 2;
   if (bmi < 18.5) {
     return 'Low (under weight)';
@@ -28,12 +28,12 @@ const calculateBmi = (weight: number, height: number): string => {
   } else {
     return 'Normal (healthy weight)';
   }
-}
+};
 
 
 try {
   const { weight, height } = getWeightAndHeight(process.argv);
   console.log(calculateBmi(weight, height));
 } catch (e) {
-  console.log('Error, something horrible has happened, more info here ---> ', e.message);
+  console.log('Error, something horrible has happened, more info here ---> ', e.message); // eslint-disable-line
 }
