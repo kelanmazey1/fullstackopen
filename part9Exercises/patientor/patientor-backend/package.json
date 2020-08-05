@@ -1,5 +1,5 @@
 {
-  "name": "patientor",
+  "name": "patientor-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts",
+    "lint": "eslint --ext .ts .",
     "start": "node build/index.js"
   },
   "author": "Kelan Mazey",
