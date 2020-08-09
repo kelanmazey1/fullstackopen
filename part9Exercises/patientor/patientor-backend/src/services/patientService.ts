@@ -1,6 +1,6 @@
-import patientData from '../data/patients.json';
+import patientData from '../../data/patients.json';
 
-import { Patient } from '../types';
+import { Patient, NewPatient } from '../types';
 
 const patients: Array<Patient> = patientData as Array<Patient>;
 
@@ -18,8 +18,19 @@ const getAllNoSsn = (): Omit<Patient, 'ssn'>[] => {
   }));
 };
 
+const addPatient = (entry: NewPatient): Patient => {
+  const newPatientEntry = {
+    id: String(Math.round(Math.random() * 10)),
+    ...entry,
+  }
+
+  patientData.concat(newPatientEntry);
+  return newPatientEntry;
+};
+
 export default {
   getAll,
   getAllNoSsn,
+  addPatient,
 }
 
