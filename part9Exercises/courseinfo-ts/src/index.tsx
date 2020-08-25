@@ -61,7 +61,7 @@ const Content: React.FC<ContentProps> = ({ parts }) => {
     <div>
       {
         parts.map((part) =>
-          <Part part={part} />
+          <Part key={part.name} part={part} />
         )
       }
     </div>

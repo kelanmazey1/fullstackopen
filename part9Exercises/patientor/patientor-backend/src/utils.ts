@@ -41,11 +41,30 @@ const isGender = (param: any): param is Gender => {
 
 const parseGender = (gender: any): Gender => {
   if (!gender || !isGender(gender)) {
-    throw new Error('Incorrect of missing gender: ' + gender);
+    throw new Error('Incorrect or missing gender: ' + gender);
   }
 
   return gender;
 }
+
+// const isEntry = (param: any): param is Entry => {
+//   return param as Entry !== undefined;
+// }
+
+// const parseEntries = (entries: any): Array<Entry> => {
+//   if (!entries || !Array.isArray(entries)) {
+//     throw new Error('Incorrect or missing entries: ' + entries);
+//   }
+
+//   entries.forEach((entry) => {
+//     if (!isEntry(entry)) {
+//       throw new Error('One or more entry is not the correct type: ' + entry);
+//     }
+//   });
+
+//   return entries;
+// }
+
 
 const toNewPatientEntry = (object: any): NewPatient => {
   return {
@@ -54,6 +73,7 @@ const toNewPatientEntry = (object: any): NewPatient => {
   ssn: parseSsn(object.ssn),
   gender: parseGender(object.gender),
   occupation: parseOccupation(object.occupation),
+  entries: object.entries,
   }
 };
 
