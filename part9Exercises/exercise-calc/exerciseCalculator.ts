@@ -42,6 +42,8 @@ const getTargetAndHours = (args: Array<string>): ExerciseInputs => {
   }
 };
 
+// checking new pc is connected
+
 const getRating = (targetVsActual: number): RatingWithInfo => {
   if (targetVsActual < -1) {
     return {
