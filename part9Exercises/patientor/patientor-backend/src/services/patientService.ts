@@ -23,6 +23,7 @@ const getPatient = (id: string): Patient | undefined => {
   return requiredPatient;
 };
 
+
 const addPatient = (entry: NewPatient): Patient => {
   const newPatientEntry = {
     id: String(Math.round(Math.random() * 10)),
