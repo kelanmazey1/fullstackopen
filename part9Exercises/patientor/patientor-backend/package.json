@@ -13,6 +13,8 @@
   "author": "Kelan Mazey",
   "license": "ISC",
   "dependencies": {
+    "@types/cors": "^2.8.8",
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   },
   "devDependencies": {
