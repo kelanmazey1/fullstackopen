@@ -32,7 +32,6 @@ router.post('/', (req, res) => {
 
 router.post('/:id/entries', (req, res) => {
   try {
-    console.log('Router is called req.body is: ', req.body);
     const newEntry = patientService.addEntry(req.params.id , req.body);
     
     res.json(newEntry);

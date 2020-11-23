@@ -36,7 +36,6 @@ const addPatient = (patient: NewPatient): Patient => {
 };
 
 const addEntry = (patientID: string, entry: Entry): Patient | Error => {
-  console.log('addEntry is called: ', {patientID, entry});
   
   // find patient 
   const patientToAdd = patients.find((patientInDB) => patientID === patientInDB.id);
