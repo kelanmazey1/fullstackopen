@@ -9,4 +9,3 @@ Part 6 - State Management with Redux <br/>
 Part 7 - React router, Custom hooks, CSS & Webpack <br/>
 Part 8 - GraphQL <br/>
 Part 9 - Typescript <br/>
-Part 10 - React Native <br />
